@@ -4,7 +4,7 @@ import path from 'path';
 
 const contractDir = path.join(path.dirname(module.filename), '..', 'data');
 
-export type ContractName = 'multicall';
+export type ContractName = 'multicall' | 'cw-ics20-latest';
 
 export const getContractDir = (name: ContractName = 'multicall') => {
   return path.join(contractDir, name + '.wasm');
