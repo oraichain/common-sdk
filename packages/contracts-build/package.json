@@ -1,6 +1,6 @@
 {
   "name": "@oraichain/common-contracts-build",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "files": [
     "data"
   ],
