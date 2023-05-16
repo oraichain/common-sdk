@@ -25,4 +25,4 @@ typings/
 # Ignore environment variables file
 .env
 
-.npmrc
+# .npmrc
