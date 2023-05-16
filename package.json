@@ -3,6 +3,8 @@
   "private": "true",
   "license": "MIT",
   "scripts": {
+    "build:sdk": "tsc -p packages/contracts-sdk/tsconfig.json",
+    "publish:sdk": "yarn publish --access public packages/contracts-sdk",
     "docs": "typedoc --entryPointStrategy expand --name 'Common SDK' --readme none --tsconfig packages/contracts-sdk/tsconfig.json packages/contracts-sdk/src"
   },
   "workspaces": [
