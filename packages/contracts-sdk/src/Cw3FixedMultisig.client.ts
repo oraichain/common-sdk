@@ -30,7 +30,7 @@ export interface Cw3FixedMultisigReadOnlyInterface {
     limit?: number;
     startBefore?: number;
   }) => Promise<ProposalListResponseForEmpty>;
-  vote: ({
+  getVote: ({
     proposalId,
     voter
   }: {
@@ -70,7 +70,7 @@ export class Cw3FixedMultisigQueryClient implements Cw3FixedMultisigReadOnlyInte
     this.proposal = this.proposal.bind(this);
     this.listProposals = this.listProposals.bind(this);
     this.reverseProposals = this.reverseProposals.bind(this);
-    this.vote = this.vote.bind(this);
+    this.getVote = this.getVote.bind(this);
     this.listVotes = this.listVotes.bind(this);
     this.voter = this.voter.bind(this);
     this.listVoters = this.listVoters.bind(this);
@@ -120,7 +120,7 @@ export class Cw3FixedMultisigQueryClient implements Cw3FixedMultisigReadOnlyInte
       }
     });
   };
-  vote = async ({
+  getVote = async ({
     proposalId,
     voter
   }: {

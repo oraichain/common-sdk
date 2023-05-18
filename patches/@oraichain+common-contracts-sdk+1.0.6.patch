@@ -1,0 +1,62 @@
+diff --git a/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts b/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts
+index 63f1897..0c514ad 100644
+--- a/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts
++++ b/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts
+@@ -30,7 +30,7 @@ export interface Cw3FixedMultisigReadOnlyInterface {
+     limit?: number;
+     startBefore?: number;
+   }) => Promise<ProposalListResponseForEmpty>;
+-  vote: ({
++  getVote: ({
+     proposalId,
+     voter
+   }: {
+@@ -70,7 +70,7 @@ export class Cw3FixedMultisigQueryClient implements Cw3FixedMultisigReadOnlyInte
+     this.proposal = this.proposal.bind(this);
+     this.listProposals = this.listProposals.bind(this);
+     this.reverseProposals = this.reverseProposals.bind(this);
+-    this.vote = this.vote.bind(this);
++    this.getVote = this.getVote.bind(this);
+     this.listVotes = this.listVotes.bind(this);
+     this.voter = this.voter.bind(this);
+     this.listVoters = this.listVoters.bind(this);
+@@ -120,7 +120,7 @@ export class Cw3FixedMultisigQueryClient implements Cw3FixedMultisigReadOnlyInte
+       }
+     });
+   };
+-  vote = async ({
++  getVote = async ({
+     proposalId,
+     voter
+   }: {
+diff --git a/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts b/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts
+index 5aff7c5..f1d09a2 100644
+--- a/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts
++++ b/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts
+@@ -30,7 +30,7 @@ export interface Cw3FlexMultisigReadOnlyInterface {
+     limit?: number;
+     startBefore?: number;
+   }) => Promise<ProposalListResponseForEmpty>;
+-  vote: ({
++  getVote: ({
+     proposalId,
+     voter
+   }: {
+@@ -71,7 +71,7 @@ export class Cw3FlexMultisigQueryClient implements Cw3FlexMultisigReadOnlyInterf
+     this.proposal = this.proposal.bind(this);
+     this.listProposals = this.listProposals.bind(this);
+     this.reverseProposals = this.reverseProposals.bind(this);
+-    this.vote = this.vote.bind(this);
++    this.getVote = this.getVote.bind(this);
+     this.listVotes = this.listVotes.bind(this);
+     this.voter = this.voter.bind(this);
+     this.listVoters = this.listVoters.bind(this);
+@@ -122,7 +122,7 @@ export class Cw3FlexMultisigQueryClient implements Cw3FlexMultisigReadOnlyInterf
+       }
+     });
+   };
+-  vote = async ({
++  getVote = async ({
+     proposalId,
+     voter
+   }: {
