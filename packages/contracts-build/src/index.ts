@@ -5,22 +5,19 @@ import path from 'path';
 
 const contractDir = path.join(path.dirname(module.filename), '..', 'data');
 
-interface InstantiateMsgs {
-  'cw-ics20-latest': CwIcs20LatestTypes.InstantiateMsg;
-  'cw1-subkeys': Cw1SubkeysTypes.InstantiateMsg;
-  'cw1-whitelist': Cw1WhitelistTypes.InstantiateMsg;
-  'cw20-base': Cw20BaseTypes.InstantiateMsg;
-  'cw20-ics20': Cw20Ics20Types.InstantiateMsg;
-  'cw3-fixed-multisig': Cw3FixedMultisigTypes.InstantiateMsg;
-  'cw3-flex-multisig': Cw3FlexMultisigTypes.InstantiateMsg;
-  'cw4-group': Cw4GroupTypes.InstantiateMsg;
-  'cw4-stake': Cw4StakeTypes.InstantiateMsg;
-}
+export type ContractName = 'multicall' | 'cw-ics20-latest' | 'cw1-subkeys' | 'cw1-whitelist' | 'cw20-base' | 'cw20-ics20' | 'cw3-fixed-multisig' | 'cw3-flex-multisig' | 'cw4-group' | 'cw4-stake';
+export type InstantiateMsg =
+  | CwIcs20LatestTypes.InstantiateMsg
+  | Cw1SubkeysTypes.InstantiateMsg
+  | Cw1WhitelistTypes.InstantiateMsg
+  | Cw20BaseTypes.InstantiateMsg
+  | Cw20Ics20Types.InstantiateMsg
+  | Cw3FixedMultisigTypes.InstantiateMsg
+  | Cw3FlexMultisigTypes.InstantiateMsg
+  | Cw4GroupTypes.InstantiateMsg
+  | Cw4StakeTypes.InstantiateMsg;
 
-type EmptyInstantiateMsgKey = 'multicall';
-
-export type ContractName = keyof InstantiateMsgs | EmptyInstantiateMsgKey;
-export type InstantiateMsg = InstantiateMsgs[keyof InstantiateMsgs];
+export type MigrateMsg = MulticallTypes.MigrateMsg;
 
 export const getContractDir = (name: ContractName = 'multicall') => {
   return path.join(contractDir, name + '.wasm');
@@ -34,7 +31,7 @@ export const deployContract = async (client: SigningCosmWasmClient, senderAddres
   return { ...uploadRes, ...initRes };
 };
 
-export const migrateContract = async (client: SigningCosmWasmClient, senderAddress: string, contractAddress: string, msg: InstantiateMsg, contractName?: ContractName) => {
+export const migrateContract = async (client: SigningCosmWasmClient, senderAddress: string, contractAddress: string, msg: MigrateMsg, contractName?: ContractName) => {
   // upload and instantiate the contract
   const wasmBytecode = readFileSync(getContractDir(contractName));
   const uploadRes = await client.upload(senderAddress, wasmBytecode, 'auto');
