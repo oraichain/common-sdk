@@ -3,6 +3,10 @@
   "version": "1.0.13",
   "main": "build/index.js",
   "license": "MIT",
+  "files": [
+    "build/",
+    "data/"
+  ],
   "dependencies": {
     "@oraichain/common-contracts-sdk": "^1.0.9"
   }

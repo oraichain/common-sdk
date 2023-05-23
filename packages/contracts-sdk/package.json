@@ -2,5 +2,8 @@
   "name": "@oraichain/common-contracts-sdk",
   "version": "1.0.9",
   "main": "build/index.js",
+  "files": [
+    "build/"
+  ],
   "license": "MIT"
 }
