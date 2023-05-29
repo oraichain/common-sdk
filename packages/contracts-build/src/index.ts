@@ -13,7 +13,8 @@ export type InstantiateMsg =
   | Cw3FixedMultisigTypes.InstantiateMsg
   | Cw3FlexMultisigTypes.InstantiateMsg
   | Cw4GroupTypes.InstantiateMsg
-  | Cw4StakeTypes.InstantiateMsg;
+  | Cw4StakeTypes.InstantiateMsg
+  | MulticallTypes.InstantiateMsg
 
 const contractDir = path.join(path.dirname(module.filename), '..', 'data');
 
@@ -21,7 +22,7 @@ export const getContractDir = (name: ContractName = 'multicall') => {
   return path.join(contractDir, name + '.wasm');
 };
 
-export const deployContract = async (client: SigningCosmWasmClient, senderAddress: string, contractName?: ContractName, msg?: InstantiateMsg, label?: string) => {
+export const deployContract = async (client: SigningCosmWasmClient, senderAddress: string, msg?: InstantiateMsg, contractName?: ContractName, label?: string) => {
   // upload and instantiate the contract
   const wasmBytecode = readFileSync(getContractDir(contractName));
   const uploadRes = await client.upload(senderAddress, wasmBytecode, 'auto');
