@@ -111,6 +111,39 @@ export interface Allowance {
   balance: NativeBalance;
   expires: Expiration;
 }
+export type IbcMsg = {
+  transfer: {
+    amount: Coin;
+    channel_id: string;
+    timeout: IbcTimeout;
+    to_address: string;
+  };
+} | {
+  send_packet: {
+    channel_id: string;
+    data: Binary;
+    timeout: IbcTimeout;
+  };
+} | {
+  close_channel: {
+    channel_id: string;
+  };
+};
+export type GovMsg = {
+  vote: {
+    proposal_id: number;
+    vote: VoteOption;
+  };
+};
+export type VoteOption = "yes" | "no" | "abstain" | "no_with_veto";
+export interface IbcTimeout {
+  block?: IbcTimeoutBlock | null;
+  timestamp?: Timestamp | null;
+}
+export interface IbcTimeoutBlock {
+  height: number;
+  revision: number;
+}
 export type Logo = {
   url: string;
 } | {
@@ -140,6 +173,52 @@ export type LogoInfo = {
   url: string;
 } | "embedded";
 export type Addr = string;
+export type Duration = {
+  height: number;
+} | {
+  time: number;
+};
+export type Threshold = {
+  absolute_count: {
+    weight: number;
+  };
+} | {
+  absolute_percentage: {
+    percentage: Decimal;
+  };
+} | {
+  threshold_quorum: {
+    quorum: Decimal;
+    threshold: Decimal;
+  };
+};
+export type Decimal = string;
+export interface Voter {
+  addr: string;
+  weight: number;
+}
+export type Vote = "yes" | "no" | "abstain" | "veto";
+export type Denom = {
+  native: string;
+} | {
+  cw20: Addr;
+};
+export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
+export interface DepositInfo {
+  amount: Uint128;
+  denom: Denom;
+  refund_failed_proposals: boolean;
+}
+export interface VoterDetail {
+  addr: string;
+  weight: number;
+}
+export interface VoteInfo {
+  proposal_id: number;
+  vote: Vote;
+  voter: string;
+  weight: number;
+}
 export interface AllowMsg {
   contract: string;
   gas_limit?: number | null;
@@ -151,7 +230,6 @@ export interface Cw20ReceiveMsg {
 }
 export interface TransferMsg {
   channel: string;
-  memo?: string | null;
   remote_address: string;
   timeout?: number | null;
 }
@@ -176,69 +254,15 @@ export interface AllowedInfo {
 export type Executor = "member" | {
   only: Addr;
 };
-export type Duration = {
-  height: number;
-} | {
-  time: number;
-};
 export type UncheckedDenom = {
   native: string;
 } | {
   cw20: string;
 };
-export type Threshold = {
-  absolute_count: {
-    weight: number;
-  };
-} | {
-  absolute_percentage: {
-    percentage: Decimal;
-  };
-} | {
-  threshold_quorum: {
-    quorum: Decimal;
-    threshold: Decimal;
-  };
-};
-export type Decimal = string;
 export interface UncheckedDepositInfo {
   amount: Uint128;
   denom: UncheckedDenom;
   refund_failed_proposals: boolean;
-}
-export type IbcMsg = {
-  transfer: {
-    amount: Coin;
-    channel_id: string;
-    timeout: IbcTimeout;
-    to_address: string;
-  };
-} | {
-  send_packet: {
-    channel_id: string;
-    data: Binary;
-    timeout: IbcTimeout;
-  };
-} | {
-  close_channel: {
-    channel_id: string;
-  };
-};
-export type GovMsg = {
-  vote: {
-    proposal_id: number;
-    vote: VoteOption;
-  };
-};
-export type VoteOption = "yes" | "no" | "abstain" | "no_with_veto";
-export type Vote = "yes" | "no" | "abstain" | "veto";
-export interface IbcTimeout {
-  block?: IbcTimeoutBlock | null;
-  timestamp?: Timestamp | null;
-}
-export interface IbcTimeoutBlock {
-  height: number;
-  revision: number;
 }
 export interface MemberChangedHookMsg {
   diffs: MemberDiff[];
@@ -249,11 +273,6 @@ export interface MemberDiff {
   old?: number | null;
 }
 export type Cw4Contract = Addr;
-export type Denom = {
-  native: string;
-} | {
-  cw20: Addr;
-};
 export interface Config {
   executor?: Executor | null;
   group_addr: Cw4Contract;
@@ -261,33 +280,13 @@ export interface Config {
   proposal_deposit?: DepositInfo | null;
   threshold: Threshold;
 }
-export interface DepositInfo {
-  amount: Uint128;
-  denom: Denom;
-  refund_failed_proposals: boolean;
-}
-export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
-export interface VoterDetail {
-  addr: string;
-  weight: number;
-}
-export interface VoteInfo {
-  proposal_id: number;
-  vote: Vote;
-  voter: string;
-  weight: number;
-}
-export interface Voter {
+export interface Member {
   addr: string;
   weight: number;
 }
 export interface Claim {
   amount: Uint128;
   release_at: Expiration;
-}
-export interface Member {
-  addr: string;
-  weight: number;
 }
 export type AssetInfo = {
   token: {
@@ -315,6 +314,14 @@ export interface UpdatePairMsg {
 export interface DeletePairMsg {
   denom: string;
   local_channel_id: string;
+}
+export interface RelayerFee {
+  chain: string;
+  ratio: Ratio;
+}
+export interface Ratio {
+  denominator: number;
+  nominator: number;
 }
 export interface PairQuery {
   key: string;

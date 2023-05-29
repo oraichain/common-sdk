@@ -8,6 +8,11 @@ cwtools gents ../multicall ../ibc-bridge-wasm/contracts/cw-ics20-latest ../cw-pl
 # gen doc:
 yarn docs
 
+# build
+yarn build . --outDir build
+# build individual packages
+yarn build packages/contracts-sdk --outDir packages/contracts-sdk/build
+
 # update comments:
 git apply patches/contracts-sdk.patch
 # edit contracts-sdk
