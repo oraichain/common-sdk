@@ -173,6 +173,38 @@ export type LogoInfo = {
   url: string;
 } | "embedded";
 export type Addr = string;
+export interface AllowMsg {
+  contract: string;
+  gas_limit?: number | null;
+}
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
+export interface TransferMsg {
+  channel: string;
+  remote_address: string;
+  timeout?: number | null;
+}
+export type Amount = {
+  native: Coin;
+} | {
+  cw20: Cw20Coin;
+};
+export interface ChannelInfo {
+  connection_id: string;
+  counterparty_endpoint: IbcEndpoint;
+  id: string;
+}
+export interface IbcEndpoint {
+  channel_id: string;
+  port_id: string;
+}
+export interface AllowedInfo {
+  contract: string;
+  gas_limit?: number | null;
+}
 export type Duration = {
   height: number;
 } | {
@@ -218,38 +250,6 @@ export interface VoteInfo {
   vote: Vote;
   voter: string;
   weight: number;
-}
-export interface AllowMsg {
-  contract: string;
-  gas_limit?: number | null;
-}
-export interface Cw20ReceiveMsg {
-  amount: Uint128;
-  msg: Binary;
-  sender: string;
-}
-export interface TransferMsg {
-  channel: string;
-  remote_address: string;
-  timeout?: number | null;
-}
-export type Amount = {
-  native: Coin;
-} | {
-  cw20: Cw20Coin;
-};
-export interface ChannelInfo {
-  connection_id: string;
-  counterparty_endpoint: IbcEndpoint;
-  id: string;
-}
-export interface IbcEndpoint {
-  channel_id: string;
-  port_id: string;
-}
-export interface AllowedInfo {
-  contract: string;
-  gas_limit?: number | null;
 }
 export type Executor = "member" | {
   only: Addr;
@@ -315,9 +315,9 @@ export interface DeletePairMsg {
   denom: string;
   local_channel_id: string;
 }
-export interface RelayerFee {
-  chain: string;
+export interface TokenFee {
   ratio: Ratio;
+  token_denom: string;
 }
 export interface Ratio {
   denominator: number;

@@ -6,7 +6,7 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import {AllowMsg, Uint128, Binary, AssetInfo, Addr, Cw20ReceiveMsg, TransferMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, Ratio, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo, PairQuery, MappingMetadata, ArrayOfPairQuery} from "./types";
+import {AllowMsg, Uint128, Binary, AssetInfo, Addr, Cw20ReceiveMsg, TransferMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, TokenFee, Ratio, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo, PairQuery, MappingMetadata, ArrayOfPairQuery} from "./types";
 import {InstantiateMsg, ExecuteMsg, QueryMsg, AdminResponse, AllowedResponse, ChannelResponse, ConfigResponse, ListAllowedResponse, ListChannelsResponse, PortResponse} from "./CwIcs20Latest.types";
 export interface CwIcs20LatestReadOnlyInterface {
   contractAddress: string;
@@ -54,10 +54,10 @@ export interface CwIcs20LatestReadOnlyInterface {
   }: {
     assetInfo: AssetInfo;
   }) => Promise<ArrayOfPairQuery>;
-  getTransferFee: ({
-    evmPrefix
+  getTransferTokenFee: ({
+    remoteTokenDenom
   }: {
-    evmPrefix: string;
+    remoteTokenDenom: string;
   }) => Promise<Ratio>;
 }
 export class CwIcs20LatestQueryClient implements CwIcs20LatestReadOnlyInterface {
@@ -77,7 +77,7 @@ export class CwIcs20LatestQueryClient implements CwIcs20LatestReadOnlyInterface 
     this.pairMappings = this.pairMappings.bind(this);
     this.pairMapping = this.pairMapping.bind(this);
     this.pairMappingsFromAssetInfo = this.pairMappingsFromAssetInfo.bind(this);
-    this.getTransferFee = this.getTransferFee.bind(this);
+    this.getTransferTokenFee = this.getTransferTokenFee.bind(this);
   }
 
   port = async (): Promise<PortResponse> => {
@@ -181,14 +181,14 @@ export class CwIcs20LatestQueryClient implements CwIcs20LatestReadOnlyInterface 
       }
     });
   };
-  getTransferFee = async ({
-    evmPrefix
+  getTransferTokenFee = async ({
+    remoteTokenDenom
   }: {
-    evmPrefix: string;
+    remoteTokenDenom: string;
   }): Promise<Ratio> => {
     return this.client.queryContractSmart(this.contractAddress, {
-      get_transfer_fee: {
-        evm_prefix: evmPrefix
+      get_transfer_token_fee: {
+        remote_token_denom: remoteTokenDenom
       }
     });
   };
@@ -261,15 +261,17 @@ export interface CwIcs20LatestInterface extends CwIcs20LatestReadOnlyInterface {
     defaultGasLimit,
     defaultTimeout,
     feeDenom,
-    relayerFee,
-    swapRouterContract
+    feeReceiver,
+    swapRouterContract,
+    tokenFee
   }: {
     admin?: string;
     defaultGasLimit?: number;
     defaultTimeout?: number;
     feeDenom?: string;
-    relayerFee?: RelayerFee;
+    feeReceiver?: string;
     swapRouterContract?: string;
+    tokenFee?: TokenFee[];
   }, $fee?: number | StdFee | "auto", $memo?: string, $funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwIcs20LatestInterface {
@@ -407,15 +409,17 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
     defaultGasLimit,
     defaultTimeout,
     feeDenom,
-    relayerFee,
-    swapRouterContract
+    feeReceiver,
+    swapRouterContract,
+    tokenFee
   }: {
     admin?: string;
     defaultGasLimit?: number;
     defaultTimeout?: number;
     feeDenom?: string;
-    relayerFee?: RelayerFee;
+    feeReceiver?: string;
     swapRouterContract?: string;
+    tokenFee?: TokenFee[];
   }, $fee: number | StdFee | "auto" = "auto", $memo?: string, $funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
       update_config: {
@@ -423,8 +427,9 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
         default_gas_limit: defaultGasLimit,
         default_timeout: defaultTimeout,
         fee_denom: feeDenom,
-        relayer_fee: relayerFee,
-        swap_router_contract: swapRouterContract
+        fee_receiver: feeReceiver,
+        swap_router_contract: swapRouterContract,
+        token_fee: tokenFee
       }
     }, $fee, $memo, $funds);
   };
