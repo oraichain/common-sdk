@@ -111,6 +111,35 @@ export interface Allowance {
   balance: NativeBalance;
   expires: Expiration;
 }
+export type Logo = {
+  url: string;
+} | {
+  embedded: EmbeddedLogo;
+};
+export type EmbeddedLogo = {
+  svg: Binary;
+} | {
+  png: Binary;
+};
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface InstantiateMarketingInfo {
+  description?: string | null;
+  logo?: Logo | null;
+  marketing?: string | null;
+  project?: string | null;
+}
+export interface SpenderAllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  owner: string;
+}
+export type LogoInfo = {
+  url: string;
+} | "embedded";
+export type Addr = string;
 export type IbcMsg = {
   transfer: {
     amount: Coin;
@@ -143,67 +172,6 @@ export interface IbcTimeout {
 export interface IbcTimeoutBlock {
   height: number;
   revision: number;
-}
-export type Logo = {
-  url: string;
-} | {
-  embedded: EmbeddedLogo;
-};
-export type EmbeddedLogo = {
-  svg: Binary;
-} | {
-  png: Binary;
-};
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
-}
-export interface InstantiateMarketingInfo {
-  description?: string | null;
-  logo?: Logo | null;
-  marketing?: string | null;
-  project?: string | null;
-}
-export interface SpenderAllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  owner: string;
-}
-export type LogoInfo = {
-  url: string;
-} | "embedded";
-export type Addr = string;
-export interface AllowMsg {
-  contract: string;
-  gas_limit?: number | null;
-}
-export interface Cw20ReceiveMsg {
-  amount: Uint128;
-  msg: Binary;
-  sender: string;
-}
-export interface TransferMsg {
-  channel: string;
-  remote_address: string;
-  timeout?: number | null;
-}
-export type Amount = {
-  native: Coin;
-} | {
-  cw20: Cw20Coin;
-};
-export interface ChannelInfo {
-  connection_id: string;
-  counterparty_endpoint: IbcEndpoint;
-  id: string;
-}
-export interface IbcEndpoint {
-  channel_id: string;
-  port_id: string;
-}
-export interface AllowedInfo {
-  contract: string;
-  gas_limit?: number | null;
 }
 export type Duration = {
   height: number;
@@ -250,6 +218,38 @@ export interface VoteInfo {
   vote: Vote;
   voter: string;
   weight: number;
+}
+export interface AllowMsg {
+  contract: string;
+  gas_limit?: number | null;
+}
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
+export interface TransferMsg {
+  channel: string;
+  remote_address: string;
+  timeout?: number | null;
+}
+export type Amount = {
+  native: Coin;
+} | {
+  cw20: Cw20Coin;
+};
+export interface ChannelInfo {
+  connection_id: string;
+  counterparty_endpoint: IbcEndpoint;
+  id: string;
+}
+export interface IbcEndpoint {
+  channel_id: string;
+  port_id: string;
+}
+export interface AllowedInfo {
+  contract: string;
+  gas_limit?: number | null;
 }
 export type Executor = "member" | {
   only: Addr;
@@ -357,3 +357,4 @@ export interface ContractVersion {
   contract: string;
   version: string;
 }
+export { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
