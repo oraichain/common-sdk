@@ -1,5 +1,17 @@
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
-import { Cw1SubkeysTypes, Cw1WhitelistTypes, Cw20BaseTypes, Cw20Ics20Types, Cw3FixedMultisigTypes, Cw3FlexMultisigTypes, Cw4GroupTypes, Cw4StakeTypes, CwIcs20LatestTypes, MulticallTypes } from '@oraichain/common-contracts-sdk';
+import {
+  Cw1SubkeysTypes,
+  Cw1WhitelistTypes,
+  Cw20BaseTypes,
+  Cw20Ics20Types,
+  Cw3FixedMultisigTypes,
+  Cw3FlexMultisigTypes,
+  Cw4GroupTypes,
+  Cw4StakeTypes,
+  CwIcs20LatestTypes,
+  CwIcs721BridgeTypes,
+  MulticallTypes
+} from '@oraichain/common-contracts-sdk';
 import { readFileSync } from 'fs';
 import path from 'path';
 
@@ -14,6 +26,7 @@ export type InstantiateMsg =
   | Cw3FlexMultisigTypes.InstantiateMsg
   | Cw4GroupTypes.InstantiateMsg
   | Cw4StakeTypes.InstantiateMsg
+  | CwIcs721BridgeTypes.InstantiateMsg
   | MulticallTypes.InstantiateMsg;
 
 const contractDir = path.join(path.dirname(module.filename), '..', 'data');
