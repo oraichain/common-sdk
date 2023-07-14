@@ -3,7 +3,7 @@ import { Cw1SubkeysTypes, Cw1WhitelistTypes, Cw20BaseTypes, Cw20Ics20Types, Cw3F
 import { readFileSync } from 'fs';
 import path from 'path';
 
-export type ContractName = 'multicall' | 'cw-ics20-latest' | 'cw1-subkeys' | 'cw1-whitelist' | 'cw20-base' | 'cw20-ics20' | 'cw3-fixed-multisig' | 'cw3-flex-multisig' | 'cw4-group' | 'cw4-stake';
+export type ContractName = 'multicall' | 'cw-ics20-latest' | 'cw-ics721-bridge' | 'cw1-subkeys' | 'cw1-whitelist' | 'cw20-base' | 'cw20-ics20' | 'cw3-fixed-multisig' | 'cw3-flex-multisig' | 'cw4-group' | 'cw4-stake';
 export type InstantiateMsg =
   | CwIcs20LatestTypes.InstantiateMsg
   | Cw1SubkeysTypes.InstantiateMsg
@@ -14,7 +14,7 @@ export type InstantiateMsg =
   | Cw3FlexMultisigTypes.InstantiateMsg
   | Cw4GroupTypes.InstantiateMsg
   | Cw4StakeTypes.InstantiateMsg
-  | MulticallTypes.InstantiateMsg
+  | MulticallTypes.InstantiateMsg;
 
 const contractDir = path.join(path.dirname(module.filename), '..', 'data');
 

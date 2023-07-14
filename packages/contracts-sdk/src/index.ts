@@ -16,6 +16,8 @@ export * as Cw4StakeTypes from './Cw4Stake.types';
 export * from './Cw4Stake.client';
 export * as CwIcs20LatestTypes from './CwIcs20Latest.types';
 export * from './CwIcs20Latest.client';
+export * as CwIcs721BridgeTypes from './CwIcs721Bridge.types';
+export * from './CwIcs721Bridge.client';
 export * as MulticallTypes from './Multicall.types';
 export * from './Multicall.client';
 export * from "./types";

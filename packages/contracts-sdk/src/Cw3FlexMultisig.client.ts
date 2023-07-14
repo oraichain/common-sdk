@@ -30,7 +30,7 @@ export interface Cw3FlexMultisigReadOnlyInterface {
     limit?: number;
     startBefore?: number;
   }) => Promise<ProposalListResponseForEmpty>;
-  getVote: ({
+  vote: ({
     proposalId,
     voter
   }: {
@@ -71,7 +71,7 @@ export class Cw3FlexMultisigQueryClient implements Cw3FlexMultisigReadOnlyInterf
     this.proposal = this.proposal.bind(this);
     this.listProposals = this.listProposals.bind(this);
     this.reverseProposals = this.reverseProposals.bind(this);
-    this.getVote = this.getVote.bind(this);
+    this.vote = this.vote.bind(this);
     this.listVotes = this.listVotes.bind(this);
     this.voter = this.voter.bind(this);
     this.listVoters = this.listVoters.bind(this);
@@ -122,7 +122,7 @@ export class Cw3FlexMultisigQueryClient implements Cw3FlexMultisigReadOnlyInterf
       }
     });
   };
-  getVote = async ({
+  vote = async ({
     proposalId,
     voter
   }: {

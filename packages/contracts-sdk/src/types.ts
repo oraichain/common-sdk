@@ -111,6 +111,43 @@ export interface Allowance {
   balance: NativeBalance;
   expires: Expiration;
 }
+export interface AllowMsg {
+  contract: string;
+  gas_limit?: number | null;
+}
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
+export interface TransferMsg {
+  channel: string;
+  memo?: string | null;
+  remote_address: string;
+  timeout?: number | null;
+}
+export type Amount = {
+  native: Coin;
+} | {
+  cw20: Cw20Coin;
+};
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface ChannelInfo {
+  connection_id: string;
+  counterparty_endpoint: IbcEndpoint;
+  id: string;
+}
+export interface IbcEndpoint {
+  channel_id: string;
+  port_id: string;
+}
+export interface AllowedInfo {
+  contract: string;
+  gas_limit?: number | null;
+}
 export type Logo = {
   url: string;
 } | {
@@ -121,10 +158,6 @@ export type EmbeddedLogo = {
 } | {
   png: Binary;
 };
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
-}
 export interface InstantiateMarketingInfo {
   description?: string | null;
   logo?: Logo | null;
@@ -173,10 +206,18 @@ export interface IbcTimeoutBlock {
   height: number;
   revision: number;
 }
+export type Executor = "member" | {
+  only: Addr;
+};
 export type Duration = {
   height: number;
 } | {
   time: number;
+};
+export type UncheckedDenom = {
+  native: string;
+} | {
+  cw20: string;
 };
 export type Threshold = {
   absolute_count: {
@@ -193,22 +234,39 @@ export type Threshold = {
   };
 };
 export type Decimal = string;
-export interface Voter {
-  addr: string;
-  weight: number;
+export interface UncheckedDepositInfo {
+  amount: Uint128;
+  denom: UncheckedDenom;
+  refund_failed_proposals: boolean;
 }
 export type Vote = "yes" | "no" | "abstain" | "veto";
+export interface MemberChangedHookMsg {
+  diffs: MemberDiff[];
+}
+export interface MemberDiff {
+  key: string;
+  new?: number | null;
+  old?: number | null;
+}
+export type Cw4Contract = Addr;
 export type Denom = {
   native: string;
 } | {
   cw20: Addr;
 };
-export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
+export interface Config {
+  executor?: Executor | null;
+  group_addr: Cw4Contract;
+  max_voting_period: Duration;
+  proposal_deposit?: DepositInfo | null;
+  threshold: Threshold;
+}
 export interface DepositInfo {
   amount: Uint128;
   denom: Denom;
   refund_failed_proposals: boolean;
 }
+export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
 export interface VoterDetail {
   addr: string;
   weight: number;
@@ -219,74 +277,13 @@ export interface VoteInfo {
   voter: string;
   weight: number;
 }
-export interface AllowMsg {
-  contract: string;
-  gas_limit?: number | null;
-}
-export interface Cw20ReceiveMsg {
-  amount: Uint128;
-  msg: Binary;
-  sender: string;
-}
-export interface TransferMsg {
-  channel: string;
-  remote_address: string;
-  timeout?: number | null;
-}
-export type Amount = {
-  native: Coin;
-} | {
-  cw20: Cw20Coin;
-};
-export interface ChannelInfo {
-  connection_id: string;
-  counterparty_endpoint: IbcEndpoint;
-  id: string;
-}
-export interface IbcEndpoint {
-  channel_id: string;
-  port_id: string;
-}
-export interface AllowedInfo {
-  contract: string;
-  gas_limit?: number | null;
-}
-export type Executor = "member" | {
-  only: Addr;
-};
-export type UncheckedDenom = {
-  native: string;
-} | {
-  cw20: string;
-};
-export interface UncheckedDepositInfo {
-  amount: Uint128;
-  denom: UncheckedDenom;
-  refund_failed_proposals: boolean;
-}
-export interface MemberChangedHookMsg {
-  diffs: MemberDiff[];
-}
-export interface MemberDiff {
-  key: string;
-  new?: number | null;
-  old?: number | null;
-}
-export type Cw4Contract = Addr;
-export interface Config {
-  executor?: Executor | null;
-  group_addr: Cw4Contract;
-  max_voting_period: Duration;
-  proposal_deposit?: DepositInfo | null;
-  threshold: Threshold;
+export interface Voter {
+  addr: string;
+  weight: number;
 }
 export interface Member {
   addr: string;
   weight: number;
-}
-export interface Claim {
-  amount: Uint128;
-  release_at: Expiration;
 }
 export type AssetInfo = {
   token: {
@@ -315,14 +312,6 @@ export interface DeletePairMsg {
   denom: string;
   local_channel_id: string;
 }
-export interface TokenFee {
-  ratio: Ratio;
-  token_denom: string;
-}
-export interface Ratio {
-  denominator: number;
-  nominator: number;
-}
 export interface PairQuery {
   key: string;
   pair_mapping: MappingMetadata;
@@ -333,6 +322,10 @@ export interface MappingMetadata {
   remote_decimals: number;
 }
 export type ArrayOfPairQuery = PairQuery[];
+export interface Claim {
+  amount: Uint128;
+  release_at: Expiration;
+}
 export interface Call {
   address: Addr;
   data: Binary;
@@ -357,4 +350,78 @@ export interface ContractVersion {
   contract: string;
   version: string;
 }
+export type Admin = {
+  address: {
+    addr: string;
+  };
+} | {
+  instantiator: {};
+};
+export interface ContractInstantiateInfo {
+  admin?: Admin | null;
+  code_id: number;
+  label: string;
+  msg: Binary;
+}
+export type CallbackMsg = {
+  create_vouchers: {
+    create: VoucherCreation;
+    receiver: string;
+  };
+} | {
+  redeem_vouchers: {
+    receiver: string;
+    redeem: VoucherRedemption;
+  };
+} | {
+  mint: {
+    class_id: ClassId;
+    receiver: string;
+    tokens: Token[];
+  };
+} | {
+  conjunction: {
+    operands: WasmMsg[];
+  };
+};
+export type ClassId = string;
+export type TokenId = string;
+export interface Cw721ReceiveMsg {
+  msg: Binary;
+  sender: string;
+  token_id: string;
+}
+export interface VoucherCreation {
+  class: Class;
+  tokens: Token[];
+}
+export interface Class {
+  data?: Binary | null;
+  id: ClassId;
+  uri?: string | null;
+}
+export interface Token {
+  data?: Binary | null;
+  id: TokenId;
+  uri?: string | null;
+}
+export interface VoucherRedemption {
+  class: Class;
+  token_ids: TokenId[];
+}
+export interface ClassToken {
+  class_id: ClassId;
+  token_id: TokenId;
+}
+export type NullableClassId = ClassId | null;
+export type NullableClass = Class | null;
+export type ArrayOfTupleOfTupleOfClassIdAndTokenIdAndString = [[ClassId, TokenId], string][];
+export type NullableAddr = Addr | null;
+export type ArrayOfTupleOfClassIdAndAddr = [ClassId, Addr][];
+export interface Approval {
+  expires: Expiration;
+  spender: string;
+}
+export type Boolean = boolean;
+export type NullableToken = Token | null;
 export { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";

@@ -119,10 +119,12 @@ export interface Cw20Ics20Interface extends Cw20Ics20ReadOnlyInterface {
   }, $fee?: number | StdFee | "auto", $memo?: string, $funds?: Coin[]) => Promise<ExecuteResult>;
   transfer: ({
     channel,
+    memo,
     remoteAddress,
     timeout
   }: {
     channel: string;
+    memo?: string;
     remoteAddress: string;
     timeout?: number;
   }, $fee?: number | StdFee | "auto", $memo?: string, $funds?: Coin[]) => Promise<ExecuteResult>;
@@ -174,16 +176,19 @@ export class Cw20Ics20Client extends Cw20Ics20QueryClient implements Cw20Ics20In
   };
   transfer = async ({
     channel,
+    memo,
     remoteAddress,
     timeout
   }: {
     channel: string;
+    memo?: string;
     remoteAddress: string;
     timeout?: number;
   }, $fee: number | StdFee | "auto" = "auto", $memo?: string, $funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
       transfer: {
         channel,
+        memo,
         remote_address: remoteAddress,
         timeout
       }
