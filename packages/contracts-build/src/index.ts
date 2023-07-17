@@ -10,8 +10,7 @@ import {
   Cw4GroupTypes,
   Cw4StakeTypes,
   CwIcs20LatestTypes,
-  CwIcs721BridgeTypes,
-  MulticallTypes
+  CwIcs721BridgeTypes
 } from '@oraichain/common-contracts-sdk';
 import { readFileSync } from 'fs';
 import path from 'path';
@@ -28,8 +27,7 @@ export type InstantiateMsg =
   | Cw3FlexMultisigTypes.InstantiateMsg
   | Cw4GroupTypes.InstantiateMsg
   | Cw4StakeTypes.InstantiateMsg
-  | CwIcs721BridgeTypes.InstantiateMsg
-  | MulticallTypes.InstantiateMsg;
+  | CwIcs721BridgeTypes.InstantiateMsg;
 
 const contractDir = path.join(path.dirname(module.filename), '..', 'data');
 
