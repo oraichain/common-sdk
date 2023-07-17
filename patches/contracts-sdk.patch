@@ -1,5 +1,5 @@
 diff --git a/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts b/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts
-index 63f1897..0c514ad 100644
+index caee46a..5548729 100644
 --- a/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts
 +++ b/packages/contracts-sdk/src/Cw3FixedMultisig.client.ts
 @@ -30,7 +30,7 @@ export interface Cw3FixedMultisigReadOnlyInterface {
@@ -30,7 +30,7 @@ index 63f1897..0c514ad 100644
      voter
    }: {
 diff --git a/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts b/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts
-index 5aff7c5..f1d09a2 100644
+index 4b90997..70f70fb 100644
 --- a/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts
 +++ b/packages/contracts-sdk/src/Cw3FlexMultisig.client.ts
 @@ -30,7 +30,7 @@ export interface Cw3FlexMultisigReadOnlyInterface {
@@ -60,3 +60,34 @@ index 5aff7c5..f1d09a2 100644
      proposalId,
      voter
    }: {
+diff --git a/packages/contracts-sdk/src/Cw721Base.client.ts b/packages/contracts-sdk/src/Cw721Base.client.ts
+index 37c26b1..c94fbac 100644
+--- a/packages/contracts-sdk/src/Cw721Base.client.ts
++++ b/packages/contracts-sdk/src/Cw721Base.client.ts
+@@ -84,7 +84,7 @@ export interface Cw721BaseReadOnlyInterface {
+     startAfter?: string;
+   }) => Promise<TokensResponse>;
+   minter: () => Promise<MinterResponse>;
+-  extension: ({
++  getExtension: ({
+     msg
+   }: {
+     msg: Empty;
+@@ -110,7 +110,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
+     this.tokens = this.tokens.bind(this);
+     this.allTokens = this.allTokens.bind(this);
+     this.minter = this.minter.bind(this);
+-    this.extension = this.extension.bind(this);
++    this.getExtension = this.getExtension.bind(this);
+     this.ownership = this.ownership.bind(this);
+   }
+ 
+@@ -267,7 +267,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
+       minter: {}
+     });
+   };
+-  extension = async ({
++  getExtension = async ({
+     msg
+   }: {
+     msg: Empty;
