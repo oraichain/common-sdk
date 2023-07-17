@@ -1,23 +1,6 @@
-import {Expiration, Timestamp, Uint64, Approval, Empty, Binary, MintMsgForNullable_Empty} from "./types";
-export interface AllNftInfoResponse {
-  access: OwnerOfResponse;
-  info: NftInfoResponseForNullable_Empty;
-}
-export interface OwnerOfResponse {
-  approvals: Approval[];
-  owner: string;
-}
-export interface NftInfoResponseForNullable_Empty {
-  extension?: Empty | null;
-  token_uri?: string | null;
-}
-export interface ApprovalResponse {
-  approval: Approval;
-}
-export interface ApprovalsResponse {
-  approvals: Approval[];
-}
-export interface ContractInfoResponse {
+import {Binary, Expiration, Timestamp, Uint64, Action, Empty, Approval, Null, OwnershipForString} from "./types";
+export interface InstantiateMsg {
+  minter: string;
   name: string;
   symbol: string;
 }
@@ -53,30 +36,23 @@ export type ExecuteMsg = {
     operator: string;
   };
 } | {
-  mint: MintMsgForNullable_Empty;
+  mint: {
+    extension: Empty;
+    owner: string;
+    token_id: string;
+    token_uri?: string | null;
+  };
 } | {
   burn: {
     token_id: string;
   };
+} | {
+  extension: {
+    msg: Empty;
+  };
+} | {
+  update_ownership: Action;
 };
-export interface InstantiateMsg {
-  minter: string;
-  name: string;
-  symbol: string;
-}
-export interface MinterResponse {
-  minter: string;
-}
-export interface NftInfoResponse {
-  extension?: Empty | null;
-  token_uri?: string | null;
-}
-export interface NumTokensResponse {
-  count: number;
-}
-export interface OperatorsResponse {
-  operators: Approval[];
-}
 export type QueryMsg = {
   owner_of: {
     include_expired?: boolean | null;
@@ -92,6 +68,12 @@ export type QueryMsg = {
   approvals: {
     include_expired?: boolean | null;
     token_id: string;
+  };
+} | {
+  operator: {
+    include_expired?: boolean | null;
+    operator: string;
+    owner: string;
   };
 } | {
   all_operators: {
@@ -126,7 +108,47 @@ export type QueryMsg = {
   };
 } | {
   minter: {};
+} | {
+  extension: {
+    msg: Empty;
+  };
+} | {
+  ownership: {};
 };
+export interface AllNftInfoResponseForEmpty {
+  access: OwnerOfResponse;
+  info: NftInfoResponseForEmpty;
+}
+export interface OwnerOfResponse {
+  approvals: Approval[];
+  owner: string;
+}
+export interface NftInfoResponseForEmpty {
+  extension: Empty;
+  token_uri?: string | null;
+}
+export interface OperatorsResponse {
+  operators: Approval[];
+}
 export interface TokensResponse {
   tokens: string[];
+}
+export interface ApprovalResponse {
+  approval: Approval;
+}
+export interface ApprovalsResponse {
+  approvals: Approval[];
+}
+export interface ContractInfoResponse {
+  name: string;
+  symbol: string;
+}
+export interface MinterResponse {
+  minter?: string | null;
+}
+export interface NumTokensResponse {
+  count: number;
+}
+export interface OperatorResponse {
+  approval: Approval;
 }

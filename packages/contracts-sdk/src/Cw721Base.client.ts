@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import {Expiration, Timestamp, Uint64, Approval, Empty, Binary, MintMsgForNullable_Empty} from "./types";
-import {AllNftInfoResponse, OwnerOfResponse, NftInfoResponseForNullable_Empty, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, ExecuteMsg, InstantiateMsg, MinterResponse, NftInfoResponse, NumTokensResponse, OperatorsResponse, QueryMsg, TokensResponse} from "./Cw721Base.types";
+import {Binary, Expiration, Timestamp, Uint64, Action, Empty, Approval, Null, OwnershipForString} from "./types";
+import {InstantiateMsg, ExecuteMsg, QueryMsg, AllNftInfoResponseForEmpty, OwnerOfResponse, NftInfoResponseForEmpty, OperatorsResponse, TokensResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, MinterResponse, NumTokensResponse, OperatorResponse} from "./Cw721Base.types";
 export interface Cw721BaseReadOnlyInterface {
   contractAddress: string;
   ownerOf: ({
@@ -33,6 +33,15 @@ export interface Cw721BaseReadOnlyInterface {
     includeExpired?: boolean;
     tokenId: string;
   }) => Promise<ApprovalsResponse>;
+  operator: ({
+    includeExpired,
+    operator,
+    owner
+  }: {
+    includeExpired?: boolean;
+    operator: string;
+    owner: string;
+  }) => Promise<OperatorResponse>;
   allOperators: ({
     includeExpired,
     limit,
@@ -43,21 +52,21 @@ export interface Cw721BaseReadOnlyInterface {
     limit?: number;
     owner: string;
     startAfter?: string;
-  }) => Promise<AllOperatorsResponse>;
+  }) => Promise<OperatorsResponse>;
   numTokens: () => Promise<NumTokensResponse>;
   contractInfo: () => Promise<ContractInfoResponse>;
   nftInfo: ({
     tokenId
   }: {
     tokenId: string;
-  }) => Promise<NftInfoResponse>;
+  }) => Promise<NftInfoResponseForEmpty>;
   allNftInfo: ({
     includeExpired,
     tokenId
   }: {
     includeExpired?: boolean;
     tokenId: string;
-  }) => Promise<AllNftInfoResponse>;
+  }) => Promise<AllNftInfoResponseForEmpty>;
   tokens: ({
     limit,
     owner,
@@ -73,8 +82,14 @@ export interface Cw721BaseReadOnlyInterface {
   }: {
     limit?: number;
     startAfter?: string;
-  }) => Promise<AllTokensResponse>;
+  }) => Promise<TokensResponse>;
   minter: () => Promise<MinterResponse>;
+  extension: ({
+    msg
+  }: {
+    msg: Empty;
+  }) => Promise<Null>;
+  ownership: () => Promise<OwnershipForString>;
 }
 export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
   client: CosmWasmClient;
@@ -86,6 +101,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
     this.ownerOf = this.ownerOf.bind(this);
     this.approval = this.approval.bind(this);
     this.approvals = this.approvals.bind(this);
+    this.operator = this.operator.bind(this);
     this.allOperators = this.allOperators.bind(this);
     this.numTokens = this.numTokens.bind(this);
     this.contractInfo = this.contractInfo.bind(this);
@@ -94,6 +110,8 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
     this.tokens = this.tokens.bind(this);
     this.allTokens = this.allTokens.bind(this);
     this.minter = this.minter.bind(this);
+    this.extension = this.extension.bind(this);
+    this.ownership = this.ownership.bind(this);
   }
 
   ownerOf = async ({
@@ -141,6 +159,23 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
       }
     });
   };
+  operator = async ({
+    includeExpired,
+    operator,
+    owner
+  }: {
+    includeExpired?: boolean;
+    operator: string;
+    owner: string;
+  }): Promise<OperatorResponse> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      operator: {
+        include_expired: includeExpired,
+        operator,
+        owner
+      }
+    });
+  };
   allOperators = async ({
     includeExpired,
     limit,
@@ -151,7 +186,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
     limit?: number;
     owner: string;
     startAfter?: string;
-  }): Promise<AllOperatorsResponse> => {
+  }): Promise<OperatorsResponse> => {
     return this.client.queryContractSmart(this.contractAddress, {
       all_operators: {
         include_expired: includeExpired,
@@ -175,7 +210,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
     tokenId
   }: {
     tokenId: string;
-  }): Promise<NftInfoResponse> => {
+  }): Promise<NftInfoResponseForEmpty> => {
     return this.client.queryContractSmart(this.contractAddress, {
       nft_info: {
         token_id: tokenId
@@ -188,7 +223,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
   }: {
     includeExpired?: boolean;
     tokenId: string;
-  }): Promise<AllNftInfoResponse> => {
+  }): Promise<AllNftInfoResponseForEmpty> => {
     return this.client.queryContractSmart(this.contractAddress, {
       all_nft_info: {
         include_expired: includeExpired,
@@ -219,7 +254,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
   }: {
     limit?: number;
     startAfter?: string;
-  }): Promise<AllTokensResponse> => {
+  }): Promise<TokensResponse> => {
     return this.client.queryContractSmart(this.contractAddress, {
       all_tokens: {
         limit,
@@ -230,6 +265,22 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
   minter = async (): Promise<MinterResponse> => {
     return this.client.queryContractSmart(this.contractAddress, {
       minter: {}
+    });
+  };
+  extension = async ({
+    msg
+  }: {
+    msg: Empty;
+  }): Promise<Null> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      extension: {
+        msg
+      }
+    });
+  };
+  ownership = async (): Promise<OwnershipForString> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      ownership: {}
     });
   };
 }
@@ -286,7 +337,7 @@ export interface Cw721BaseInterface extends Cw721BaseReadOnlyInterface {
     tokenId,
     tokenUri
   }: {
-    extension?: Empty;
+    extension: Empty;
     owner: string;
     tokenId: string;
     tokenUri?: string;
@@ -296,6 +347,12 @@ export interface Cw721BaseInterface extends Cw721BaseReadOnlyInterface {
   }: {
     tokenId: string;
   }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
+  extension: ({
+    msg
+  }: {
+    msg: Empty;
+  }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
+  updateOwnership: (action: Action, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class Cw721BaseClient extends Cw721BaseQueryClient implements Cw721BaseInterface {
   client: SigningCosmWasmClient;
@@ -315,6 +372,8 @@ export class Cw721BaseClient extends Cw721BaseQueryClient implements Cw721BaseIn
     this.revokeAll = this.revokeAll.bind(this);
     this.mint = this.mint.bind(this);
     this.burn = this.burn.bind(this);
+    this.extension = this.extension.bind(this);
+    this.updateOwnership = this.updateOwnership.bind(this);
   }
 
   transferNft = async ({
@@ -410,7 +469,7 @@ export class Cw721BaseClient extends Cw721BaseQueryClient implements Cw721BaseIn
     tokenId,
     tokenUri
   }: {
-    extension?: Empty;
+    extension: Empty;
     owner: string;
     tokenId: string;
     tokenUri?: string;
@@ -433,6 +492,22 @@ export class Cw721BaseClient extends Cw721BaseQueryClient implements Cw721BaseIn
       burn: {
         token_id: tokenId
       }
+    }, _fee, _memo, _funds);
+  };
+  extension = async ({
+    msg
+  }: {
+    msg: Empty;
+  }, _fee: number | StdFee | "auto" = "auto", _memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      extension: {
+        msg
+      }
+    }, _fee, _memo, _funds);
+  };
+  updateOwnership = async (action: Action, _fee: number | StdFee | "auto" = "auto", _memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      update_ownership: action
     }, _fee, _memo, _funds);
   };
 }
