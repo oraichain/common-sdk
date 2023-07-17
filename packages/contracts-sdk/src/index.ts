@@ -14,6 +14,8 @@ export * as Cw4GroupTypes from './Cw4Group.types';
 export * from './Cw4Group.client';
 export * as Cw4StakeTypes from './Cw4Stake.types';
 export * from './Cw4Stake.client';
+export * as Cw721BaseTypes from './Cw721Base.types';
+export * from './Cw721Base.client';
 export * as CwIcs20LatestTypes from './CwIcs20Latest.types';
 export * from './CwIcs20Latest.client';
 export * as CwIcs721BridgeTypes from './CwIcs721Bridge.types';
