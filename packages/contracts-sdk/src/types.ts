@@ -1,3 +1,48 @@
+export type Uint128 = string;
+export type Logo = {
+  url: string;
+} | {
+  embedded: EmbeddedLogo;
+};
+export type EmbeddedLogo = {
+  svg: Binary;
+} | {
+  png: Binary;
+};
+export type Binary = string;
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface InstantiateMarketingInfo {
+  description?: string | null;
+  logo?: Logo | null;
+  marketing?: string | null;
+  project?: string | null;
+}
+export type Expiration = {
+  at_height: number;
+} | {
+  at_time: Timestamp;
+} | {
+  never: {};
+};
+export type Timestamp = Uint64;
+export type Uint64 = string;
+export interface AllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  spender: string;
+}
+export interface SpenderAllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  owner: string;
+}
+export type LogoInfo = {
+  url: string;
+} | "embedded";
+export type Addr = string;
 export type CosmosMsgForEmpty = {
   bank: BankMsg;
 } | {
@@ -28,7 +73,6 @@ export type BankMsg = {
     amount: Coin[];
   };
 };
-export type Uint128 = string;
 export type StakingMsg = {
   delegate: {
     amount: Coin;
@@ -55,7 +99,6 @@ export type DistributionMsg = {
     validator: string;
   };
 };
-export type Binary = string;
 export type IbcMsg = {
   transfer: {
     amount: Coin;
@@ -74,8 +117,6 @@ export type IbcMsg = {
     channel_id: string;
   };
 };
-export type Timestamp = Uint64;
-export type Uint64 = string;
 export type WasmMsg = {
   execute: {
     contract_addr: string;
@@ -126,62 +167,6 @@ export interface IbcTimeoutBlock {
   height: number;
   revision: number;
 }
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
-};
-export interface Permissions {
-  delegate: boolean;
-  redelegate: boolean;
-  undelegate: boolean;
-  withdraw: boolean;
-}
-export type NativeBalance = Coin[];
-export interface AllowanceInfo {
-  balance: NativeBalance;
-  expires: Expiration;
-  spender: string;
-}
-export interface PermissionsInfo {
-  permissions: Permissions;
-  spender: string;
-}
-export interface Allowance {
-  balance: NativeBalance;
-  expires: Expiration;
-}
-export type Logo = {
-  url: string;
-} | {
-  embedded: EmbeddedLogo;
-};
-export type EmbeddedLogo = {
-  svg: Binary;
-} | {
-  png: Binary;
-};
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
-}
-export interface InstantiateMarketingInfo {
-  description?: string | null;
-  logo?: Logo | null;
-  marketing?: string | null;
-  project?: string | null;
-}
-export interface SpenderAllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  owner: string;
-}
-export type LogoInfo = {
-  url: string;
-} | "embedded";
-export type Addr = string;
 export interface AllowMsg {
   contract: string;
   gas_limit?: number | null;
@@ -193,7 +178,6 @@ export interface Cw20ReceiveMsg {
 }
 export interface TransferMsg {
   channel: string;
-  memo?: string | null;
   remote_address: string;
   timeout?: number | null;
 }
@@ -215,18 +199,25 @@ export interface AllowedInfo {
   contract: string;
   gas_limit?: number | null;
 }
-export type Executor = "member" | {
-  only: Addr;
-};
+export interface Permissions {
+  delegate: boolean;
+  redelegate: boolean;
+  undelegate: boolean;
+  withdraw: boolean;
+}
+export type NativeBalance = Coin[];
+export interface PermissionsInfo {
+  permissions: Permissions;
+  spender: string;
+}
+export interface Allowance {
+  balance: NativeBalance;
+  expires: Expiration;
+}
 export type Duration = {
   height: number;
 } | {
   time: number;
-};
-export type UncheckedDenom = {
-  native: string;
-} | {
-  cw20: string;
 };
 export type Threshold = {
   absolute_count: {
@@ -243,39 +234,22 @@ export type Threshold = {
   };
 };
 export type Decimal = string;
-export interface UncheckedDepositInfo {
-  amount: Uint128;
-  denom: UncheckedDenom;
-  refund_failed_proposals: boolean;
+export interface Voter {
+  addr: string;
+  weight: number;
 }
 export type Vote = "yes" | "no" | "abstain" | "veto";
-export interface MemberChangedHookMsg {
-  diffs: MemberDiff[];
-}
-export interface MemberDiff {
-  key: string;
-  new?: number | null;
-  old?: number | null;
-}
-export type Cw4Contract = Addr;
 export type Denom = {
   native: string;
 } | {
   cw20: Addr;
 };
-export interface Config {
-  executor?: Executor | null;
-  group_addr: Cw4Contract;
-  max_voting_period: Duration;
-  proposal_deposit?: DepositInfo | null;
-  threshold: Threshold;
-}
+export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
 export interface DepositInfo {
   amount: Uint128;
   denom: Denom;
   refund_failed_proposals: boolean;
 }
-export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
 export interface VoterDetail {
   addr: string;
   weight: number;
@@ -286,9 +260,34 @@ export interface VoteInfo {
   voter: string;
   weight: number;
 }
-export interface Voter {
-  addr: string;
-  weight: number;
+export type Executor = "member" | {
+  only: Addr;
+};
+export type UncheckedDenom = {
+  native: string;
+} | {
+  cw20: string;
+};
+export interface UncheckedDepositInfo {
+  amount: Uint128;
+  denom: UncheckedDenom;
+  refund_failed_proposals: boolean;
+}
+export interface MemberChangedHookMsg {
+  diffs: MemberDiff[];
+}
+export interface MemberDiff {
+  key: string;
+  new?: number | null;
+  old?: number | null;
+}
+export type Cw4Contract = Addr;
+export interface Config {
+  executor?: Executor | null;
+  group_addr: Cw4Contract;
+  max_voting_period: Duration;
+  proposal_deposit?: DepositInfo | null;
+  threshold: Threshold;
 }
 export interface Member {
   addr: string;
@@ -297,22 +296,6 @@ export interface Member {
 export interface Claim {
   amount: Uint128;
   release_at: Expiration;
-}
-export type Action = {
-  transfer_ownership: {
-    expiry?: Expiration | null;
-    new_owner: string;
-  };
-} | "accept_ownership" | "renounce_ownership";
-export interface Approval {
-  expires: Expiration;
-  spender: string;
-}
-export type Null = null;
-export interface OwnershipForString {
-  owner?: string | null;
-  pending_expiry?: Expiration | null;
-  pending_owner?: string | null;
 }
 export type AssetInfo = {
   token: {
@@ -341,6 +324,18 @@ export interface DeletePairMsg {
   denom: string;
   local_channel_id: string;
 }
+export interface RelayerFee {
+  fee: Uint128;
+  prefix: string;
+}
+export interface TokenFee {
+  ratio: Ratio;
+  token_denom: string;
+}
+export interface Ratio {
+  denominator: number;
+  nominator: number;
+}
 export interface PairQuery {
   key: string;
   pair_mapping: MappingMetadata;
@@ -351,76 +346,6 @@ export interface MappingMetadata {
   remote_decimals: number;
 }
 export type ArrayOfPairQuery = PairQuery[];
-export type Admin = {
-  address: {
-    addr: string;
-  };
-} | {
-  instantiator: {};
-};
-export interface ContractInstantiateInfo {
-  admin?: Admin | null;
-  code_id: number;
-  label: string;
-  msg: Binary;
-}
-export type CallbackMsg = {
-  create_vouchers: {
-    create: VoucherCreation;
-    receiver: string;
-  };
-} | {
-  redeem_vouchers: {
-    receiver: string;
-    redeem: VoucherRedemption;
-  };
-} | {
-  mint: {
-    class_id: ClassId;
-    receiver: string;
-    tokens: Token[];
-  };
-} | {
-  conjunction: {
-    operands: WasmMsg[];
-  };
-};
-export type ClassId = string;
-export type TokenId = string;
-export interface Cw721ReceiveMsg {
-  msg: Binary;
-  sender: string;
-  token_id: string;
-}
-export interface VoucherCreation {
-  class: Class;
-  tokens: Token[];
-}
-export interface Class {
-  data?: Binary | null;
-  id: ClassId;
-  uri?: string | null;
-}
-export interface Token {
-  data?: Binary | null;
-  id: TokenId;
-  uri?: string | null;
-}
-export interface VoucherRedemption {
-  class: Class;
-  token_ids: TokenId[];
-}
-export interface ClassToken {
-  class_id: ClassId;
-  token_id: TokenId;
-}
-export type NullableClassId = ClassId | null;
-export type NullableClass = Class | null;
-export type ArrayOfTupleOfTupleOfClassIdAndTokenIdAndString = [[ClassId, TokenId], string][];
-export type NullableAddr = Addr | null;
-export type ArrayOfTupleOfClassIdAndAddr = [ClassId, Addr][];
-export type Boolean = boolean;
-export type NullableToken = Token | null;
 export interface Call {
   address: Addr;
   data: Binary;
@@ -444,5 +369,43 @@ export interface BlockAggregateResult {
 export interface ContractVersion {
   contract: string;
   version: string;
+}
+export interface NonFungibleTokenPacketData {
+  /**
+   * Optional base64 encoded field which contains on-chain metadata about the NFT class. Must be non-empty if provided.
+   */
+  classData?: Binary | null
+  /**
+   * Uniquely identifies the collection which the tokens being transfered belong to on the sending chain. Must be non-empty.
+   */
+  classId: ClassId
+  /**
+   * Optional URL that points to metadata about the collection. Must be non-empty if provided.
+   */
+  classUri?: string | null
+  /**
+   * Memo to add custom string to the msg
+   */
+  memo?: string | null
+  /**
+   * The address that should receive the tokens on the receiving chain.
+   */
+  receiver: string
+  /**
+   * The address sending the tokens on the sending chain.
+   */
+  sender: string
+  /**
+   * Optional base64 encoded metadata for the tokens being transfered. `tokenData[N]` should hold metadata for `tokenIds[N]` and both lists should have the same length if provided. Must be non-empty if provided.
+   */
+  tokenData?: Binary[] | null
+  /**
+   * Uniquely identifies the tokens in the NFT collection being transfered. This MUST be non-empty.
+   */
+  tokenIds: TokenId[]
+  /**
+   * Optional URL that points to metadata for each token being transfered. `tokenUris[N]` should hold the metadata for `tokenIds[N]` and both lists should have the same if provided. Must be non-empty if provided.
+   */
+  tokenUris?: string[] | null
 }
 export { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";

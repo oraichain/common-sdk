@@ -84,7 +84,7 @@ export interface Cw721BaseReadOnlyInterface {
     startAfter?: string;
   }) => Promise<TokensResponse>;
   minter: () => Promise<MinterResponse>;
-  extension: ({
+  getExtension: ({
     msg
   }: {
     msg: Empty;
@@ -110,7 +110,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
     this.tokens = this.tokens.bind(this);
     this.allTokens = this.allTokens.bind(this);
     this.minter = this.minter.bind(this);
-    this.extension = this.extension.bind(this);
+    this.getExtension = this.getExtension.bind(this);
     this.ownership = this.ownership.bind(this);
   }
 
@@ -267,7 +267,7 @@ export class Cw721BaseQueryClient implements Cw721BaseReadOnlyInterface {
       minter: {}
     });
   };
-  extension = async ({
+  getExtension = async ({
     msg
   }: {
     msg: Empty;

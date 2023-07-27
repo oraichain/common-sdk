@@ -1,4 +1,4 @@
-import {AllowMsg, Uint128, Binary, AssetInfo, Addr, Cw20ReceiveMsg, TransferMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo, PairQuery, MappingMetadata, ArrayOfPairQuery} from "./types";
+import {AllowMsg, Uint128, Binary, AssetInfo, Addr, Cw20ReceiveMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, TokenFee, Ratio, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo, PairQuery, MappingMetadata, ArrayOfPairQuery} from "./types";
 export interface InstantiateMsg {
   allowlist: AllowMsg[];
   default_gas_limit?: number | null;
@@ -8,8 +8,6 @@ export interface InstantiateMsg {
 }
 export type ExecuteMsg = {
   receive: Cw20ReceiveMsg;
-} | {
-  transfer: TransferMsg;
 } | {
   transfer_to_remote: TransferBackMsg;
 } | {
@@ -24,7 +22,10 @@ export type ExecuteMsg = {
     default_gas_limit?: number | null;
     default_timeout?: number | null;
     fee_denom?: string | null;
+    fee_receiver?: string | null;
+    relayer_fee?: RelayerFee[] | null;
     swap_router_contract?: string | null;
+    token_fee?: TokenFee[] | null;
   };
 };
 export type QueryMsg = {
@@ -63,6 +64,10 @@ export type QueryMsg = {
 } | {
   pair_mappings_from_asset_info: {
     asset_info: AssetInfo;
+  };
+} | {
+  get_transfer_token_fee: {
+    remote_token_denom: string;
   };
 };
 export interface AdminResponse {
