@@ -24,6 +24,7 @@ export type ExecuteMsg = {
     fee_denom?: string | null;
     fee_receiver?: string | null;
     relayer_fee?: RelayerFee[] | null;
+    relayer_fee_receiver?: string | null;
     swap_router_contract?: string | null;
     token_fee?: TokenFee[] | null;
   };
@@ -87,7 +88,9 @@ export interface ConfigResponse {
   default_timeout: number;
   fee_denom: string;
   gov_contract: string;
+  relayer_fee_receiver: Addr;
   swap_router_contract: string;
+  token_fee_receiver: Addr;
 }
 export interface ListAllowedResponse {
   allow: AllowedInfo[];

@@ -288,6 +288,22 @@ export interface Claim {
   amount: Uint128;
   release_at: Expiration;
 }
+export type Action = {
+  transfer_ownership: {
+    expiry?: Expiration | null;
+    new_owner: string;
+  };
+} | "accept_ownership" | "renounce_ownership";
+export interface Approval {
+  expires: Expiration;
+  spender: string;
+}
+export type Null = null;
+export interface OwnershipForString {
+  owner?: string | null;
+  pending_expiry?: Expiration | null;
+  pending_owner?: string | null;
+}
 export type AssetInfo = {
   token: {
     contract_addr: Addr;
@@ -337,22 +353,6 @@ export interface MappingMetadata {
   remote_decimals: number;
 }
 export type ArrayOfPairQuery = PairQuery[];
-export type Action = {
-  transfer_ownership: {
-    expiry?: Expiration | null;
-    new_owner: string;
-  };
-} | "accept_ownership" | "renounce_ownership";
-export interface Approval {
-  expires: Expiration;
-  spender: string;
-}
-export type Null = null;
-export interface OwnershipForString {
-  owner?: string | null;
-  pending_expiry?: Expiration | null;
-  pending_owner?: string | null;
-}
 export type Admin = {
   address: {
     addr: string;

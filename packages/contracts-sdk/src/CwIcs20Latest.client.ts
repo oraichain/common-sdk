@@ -252,6 +252,7 @@ export interface CwIcs20LatestInterface extends CwIcs20LatestReadOnlyInterface {
     feeDenom,
     feeReceiver,
     relayerFee,
+    relayerFeeReceiver,
     swapRouterContract,
     tokenFee
   }: {
@@ -261,6 +262,7 @@ export interface CwIcs20LatestInterface extends CwIcs20LatestReadOnlyInterface {
     feeDenom?: string;
     feeReceiver?: string;
     relayerFee?: RelayerFee[];
+    relayerFeeReceiver?: string;
     swapRouterContract?: string;
     tokenFee?: TokenFee[];
   }, $fee?: number | StdFee | "auto", $memo?: string, $funds?: Coin[]) => Promise<ExecuteResult>;
@@ -381,6 +383,7 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
     feeDenom,
     feeReceiver,
     relayerFee,
+    relayerFeeReceiver,
     swapRouterContract,
     tokenFee
   }: {
@@ -390,6 +393,7 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
     feeDenom?: string;
     feeReceiver?: string;
     relayerFee?: RelayerFee[];
+    relayerFeeReceiver?: string;
     swapRouterContract?: string;
     tokenFee?: TokenFee[];
   }, $fee: number | StdFee | "auto" = "auto", $memo?: string, $funds?: Coin[]): Promise<ExecuteResult> => {
@@ -401,6 +405,7 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
         fee_denom: feeDenom,
         fee_receiver: feeReceiver,
         relayer_fee: relayerFee,
+        relayer_fee_receiver: relayerFeeReceiver,
         swap_router_contract: swapRouterContract,
         token_fee: tokenFee
       }
