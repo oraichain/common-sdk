@@ -1,48 +1,3 @@
-export type Uint128 = string;
-export type Logo = {
-  url: string;
-} | {
-  embedded: EmbeddedLogo;
-};
-export type EmbeddedLogo = {
-  svg: Binary;
-} | {
-  png: Binary;
-};
-export type Binary = string;
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
-}
-export interface InstantiateMarketingInfo {
-  description?: string | null;
-  logo?: Logo | null;
-  marketing?: string | null;
-  project?: string | null;
-}
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
-};
-export type Timestamp = Uint64;
-export type Uint64 = string;
-export interface AllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  spender: string;
-}
-export interface SpenderAllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  owner: string;
-}
-export type LogoInfo = {
-  url: string;
-} | "embedded";
-export type Addr = string;
 export type CosmosMsgForEmpty = {
   bank: BankMsg;
 } | {
@@ -52,16 +7,7 @@ export type CosmosMsgForEmpty = {
 } | {
   distribution: DistributionMsg;
 } | {
-  stargate: {
-    type_url: string;
-    value: Binary;
-  };
-} | {
-  ibc: IbcMsg;
-} | {
   wasm: WasmMsg;
-} | {
-  gov: GovMsg;
 };
 export type BankMsg = {
   send: {
@@ -73,6 +19,7 @@ export type BankMsg = {
     amount: Coin[];
   };
 };
+export type Uint128 = string;
 export type StakingMsg = {
   delegate: {
     amount: Coin;
@@ -97,24 +44,6 @@ export type DistributionMsg = {
 } | {
   withdraw_delegator_reward: {
     validator: string;
-  };
-};
-export type IbcMsg = {
-  transfer: {
-    amount: Coin;
-    channel_id: string;
-    timeout: IbcTimeout;
-    to_address: string;
-  };
-} | {
-  send_packet: {
-    channel_id: string;
-    data: Binary;
-    timeout: IbcTimeout;
-  };
-} | {
-  close_channel: {
-    channel_id: string;
   };
 };
 export type WasmMsg = {
@@ -147,6 +76,59 @@ export type WasmMsg = {
     contract_addr: string;
   };
 };
+export type Binary = string;
+export type Expiration = {
+  at_height: number;
+} | {
+  at_time: Timestamp;
+} | {
+  never: {};
+};
+export type Timestamp = Uint64;
+export type Uint64 = string;
+export interface Coin {
+  amount: Uint128;
+  denom: string;
+}
+export interface Empty {}
+export interface Permissions {
+  delegate: boolean;
+  redelegate: boolean;
+  undelegate: boolean;
+  withdraw: boolean;
+}
+export type NativeBalance = Coin[];
+export interface AllowanceInfo {
+  balance: NativeBalance;
+  expires: Expiration;
+  spender: string;
+}
+export interface PermissionsInfo {
+  permissions: Permissions;
+  spender: string;
+}
+export interface Allowance {
+  balance: NativeBalance;
+  expires: Expiration;
+}
+export type IbcMsg = {
+  transfer: {
+    amount: Coin;
+    channel_id: string;
+    timeout: IbcTimeout;
+    to_address: string;
+  };
+} | {
+  send_packet: {
+    channel_id: string;
+    data: Binary;
+    timeout: IbcTimeout;
+  };
+} | {
+  close_channel: {
+    channel_id: string;
+  };
+};
 export type GovMsg = {
   vote: {
     proposal_id: number;
@@ -154,11 +136,6 @@ export type GovMsg = {
   };
 };
 export type VoteOption = "yes" | "no" | "abstain" | "no_with_veto";
-export interface Coin {
-  amount: Uint128;
-  denom: string;
-}
-export interface Empty {}
 export interface IbcTimeout {
   block?: IbcTimeoutBlock | null;
   timestamp?: Timestamp | null;
@@ -167,6 +144,35 @@ export interface IbcTimeoutBlock {
   height: number;
   revision: number;
 }
+export type Logo = {
+  url: string;
+} | {
+  embedded: EmbeddedLogo;
+};
+export type EmbeddedLogo = {
+  svg: Binary;
+} | {
+  png: Binary;
+};
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface InstantiateMarketingInfo {
+  description?: string | null;
+  logo?: Logo | null;
+  marketing?: string | null;
+  project?: string | null;
+}
+export interface SpenderAllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  owner: string;
+}
+export type LogoInfo = {
+  url: string;
+} | "embedded";
+export type Addr = string;
 export interface AllowMsg {
   contract: string;
   gas_limit?: number | null;
@@ -198,21 +204,6 @@ export interface IbcEndpoint {
 export interface AllowedInfo {
   contract: string;
   gas_limit?: number | null;
-}
-export interface Permissions {
-  delegate: boolean;
-  redelegate: boolean;
-  undelegate: boolean;
-  withdraw: boolean;
-}
-export type NativeBalance = Coin[];
-export interface PermissionsInfo {
-  permissions: Permissions;
-  spender: string;
-}
-export interface Allowance {
-  balance: NativeBalance;
-  expires: Expiration;
 }
 export type Duration = {
   height: number;
@@ -334,7 +325,7 @@ export interface TokenFee {
 }
 export interface Ratio {
   denominator: number;
-  nominator: number;
+  numerator: number;
 }
 export interface PairQuery {
   key: string;
@@ -346,6 +337,92 @@ export interface MappingMetadata {
   remote_decimals: number;
 }
 export type ArrayOfPairQuery = PairQuery[];
+export type Action = {
+  transfer_ownership: {
+    expiry?: Expiration | null;
+    new_owner: string;
+  };
+} | "accept_ownership" | "renounce_ownership";
+export interface Approval {
+  expires: Expiration;
+  spender: string;
+}
+export type Null = null;
+export interface OwnershipForString {
+  owner?: string | null;
+  pending_expiry?: Expiration | null;
+  pending_owner?: string | null;
+}
+export type Admin = {
+  address: {
+    addr: string;
+  };
+} | {
+  instantiator: {};
+};
+export interface ContractInstantiateInfo {
+  admin?: Admin | null;
+  code_id: number;
+  label: string;
+  msg: Binary;
+}
+export type CallbackMsg = {
+  create_vouchers: {
+    create: VoucherCreation;
+    receiver: string;
+  };
+} | {
+  redeem_vouchers: {
+    receiver: string;
+    redeem: VoucherRedemption;
+  };
+} | {
+  mint: {
+    class_id: ClassId;
+    receiver: string;
+    tokens: Token[];
+  };
+} | {
+  conjunction: {
+    operands: WasmMsg[];
+  };
+};
+export type ClassId = string;
+export type TokenId = string;
+export interface Cw721ReceiveMsg {
+  msg: Binary;
+  sender: string;
+  token_id: string;
+}
+export interface VoucherCreation {
+  class: Class;
+  tokens: Token[];
+}
+export interface Class {
+  data?: Binary | null;
+  id: ClassId;
+  uri?: string | null;
+}
+export interface Token {
+  data?: Binary | null;
+  id: TokenId;
+  uri?: string | null;
+}
+export interface VoucherRedemption {
+  class: Class;
+  token_ids: TokenId[];
+}
+export interface ClassToken {
+  class_id: ClassId;
+  token_id: TokenId;
+}
+export type NullableClassId = ClassId | null;
+export type NullableClass = Class | null;
+export type ArrayOfTupleOfTupleOfClassIdAndTokenIdAndString = [[ClassId, TokenId], string][];
+export type NullableAddr = Addr | null;
+export type ArrayOfTupleOfClassIdAndAddr = [ClassId, Addr][];
+export type Boolean = boolean;
+export type NullableToken = Token | null;
 export interface Call {
   address: Addr;
   data: Binary;
