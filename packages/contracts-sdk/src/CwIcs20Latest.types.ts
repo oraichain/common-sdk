@@ -89,8 +89,14 @@ export interface ConfigResponse {
   fee_denom: string;
   gov_contract: string;
   relayer_fee_receiver: Addr;
+  relayer_fees: RelayerFeeResponse[];
   swap_router_contract: string;
   token_fee_receiver: Addr;
+  token_fees: TokenFee[];
+}
+export interface RelayerFeeResponse {
+  amount: Uint128;
+  prefix: string;
 }
 export interface ListAllowedResponse {
   allow: AllowedInfo[];
