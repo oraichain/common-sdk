@@ -219,15 +219,15 @@ export interface CwIcs20LatestInterface extends CwIcs20LatestReadOnlyInterface {
     timeout?: number;
   }, $fee?: number | StdFee | "auto", $memo?: string, $funds?: Coin[]) => Promise<ExecuteResult>;
   updateMappingPair: ({
-    assetInfo,
-    assetInfoDecimals,
     denom,
+    localAssetInfo,
+    localAssetInfoDecimals,
     localChannelId,
     remoteDecimals
   }: {
-    assetInfo: AssetInfo;
-    assetInfoDecimals: number;
     denom: string;
+    localAssetInfo: AssetInfo;
+    localAssetInfoDecimals: number;
     localChannelId: string;
     remoteDecimals: number;
   }, $fee?: number | StdFee | "auto", $memo?: string, $funds?: Coin[]) => Promise<ExecuteResult>;
@@ -326,23 +326,23 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
     }, $fee, $memo, $funds);
   };
   updateMappingPair = async ({
-    assetInfo,
-    assetInfoDecimals,
     denom,
+    localAssetInfo,
+    localAssetInfoDecimals,
     localChannelId,
     remoteDecimals
   }: {
-    assetInfo: AssetInfo;
-    assetInfoDecimals: number;
     denom: string;
+    localAssetInfo: AssetInfo;
+    localAssetInfoDecimals: number;
     localChannelId: string;
     remoteDecimals: number;
   }, $fee: number | StdFee | "auto" = "auto", $memo?: string, $funds?: Coin[]): Promise<ExecuteResult> => {
     return await this.client.execute(this.sender, this.contractAddress, {
       update_mapping_pair: {
-        asset_info: assetInfo,
-        asset_info_decimals: assetInfoDecimals,
         denom,
+        local_asset_info: localAssetInfo,
+        local_asset_info_decimals: localAssetInfoDecimals,
         local_channel_id: localChannelId,
         remote_decimals: remoteDecimals
       }
