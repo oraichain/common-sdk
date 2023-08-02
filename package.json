@@ -22,7 +22,6 @@
     "@cosmjs/stargate": "^0.29.5"
   },
   "devDependencies": {
-    "@terran-one/cw-simulate": "https://github.com/oraichain/cw-simulate.git",
     "@types/node": "^18.15.8",
     "lerna": "^5.6.1",
     "patch-package": "^7.0.0",
