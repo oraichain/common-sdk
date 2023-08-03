@@ -7,16 +7,7 @@ export type CosmosMsgForEmpty = {
 } | {
   distribution: DistributionMsg;
 } | {
-  stargate: {
-    type_url: string;
-    value: Binary;
-  };
-} | {
-  ibc: IbcMsg;
-} | {
   wasm: WasmMsg;
-} | {
-  gov: GovMsg;
 };
 export type BankMsg = {
   send: {
@@ -55,27 +46,6 @@ export type DistributionMsg = {
     validator: string;
   };
 };
-export type Binary = string;
-export type IbcMsg = {
-  transfer: {
-    amount: Coin;
-    channel_id: string;
-    timeout: IbcTimeout;
-    to_address: string;
-  };
-} | {
-  send_packet: {
-    channel_id: string;
-    data: Binary;
-    timeout: IbcTimeout;
-  };
-} | {
-  close_channel: {
-    channel_id: string;
-  };
-};
-export type Timestamp = Uint64;
-export type Uint64 = string;
 export type WasmMsg = {
   execute: {
     contract_addr: string;
@@ -106,26 +76,7 @@ export type WasmMsg = {
     contract_addr: string;
   };
 };
-export type GovMsg = {
-  vote: {
-    proposal_id: number;
-    vote: VoteOption;
-  };
-};
-export type VoteOption = "yes" | "no" | "abstain" | "no_with_veto";
-export interface Coin {
-  amount: Uint128;
-  denom: string;
-}
-export interface Empty {}
-export interface IbcTimeout {
-  block?: IbcTimeoutBlock | null;
-  timestamp?: Timestamp | null;
-}
-export interface IbcTimeoutBlock {
-  height: number;
-  revision: number;
-}
+export type Binary = string;
 export type Expiration = {
   at_height: number;
 } | {
@@ -133,6 +84,13 @@ export type Expiration = {
 } | {
   never: {};
 };
+export type Timestamp = Uint64;
+export type Uint64 = string;
+export interface Coin {
+  amount: Uint128;
+  denom: string;
+}
+export interface Empty {}
 export interface Permissions {
   delegate: boolean;
   redelegate: boolean;
@@ -153,6 +111,68 @@ export interface Allowance {
   balance: NativeBalance;
   expires: Expiration;
 }
+export type IbcMsg = {
+  transfer: {
+    amount: Coin;
+    channel_id: string;
+    timeout: IbcTimeout;
+    to_address: string;
+  };
+} | {
+  send_packet: {
+    channel_id: string;
+    data: Binary;
+    timeout: IbcTimeout;
+  };
+} | {
+  close_channel: {
+    channel_id: string;
+  };
+};
+export type GovMsg = {
+  vote: {
+    proposal_id: number;
+    vote: VoteOption;
+  };
+};
+export type VoteOption = "yes" | "no" | "abstain" | "no_with_veto";
+export interface IbcTimeout {
+  block?: IbcTimeoutBlock | null;
+  timestamp?: Timestamp | null;
+}
+export interface IbcTimeoutBlock {
+  height: number;
+  revision: number;
+}
+export type Logo = {
+  url: string;
+} | {
+  embedded: EmbeddedLogo;
+};
+export type EmbeddedLogo = {
+  svg: Binary;
+} | {
+  png: Binary;
+};
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface InstantiateMarketingInfo {
+  description?: string | null;
+  logo?: Logo | null;
+  marketing?: string | null;
+  project?: string | null;
+}
+export interface SpenderAllowanceInfo {
+  allowance: Uint128;
+  expires: Expiration;
+  owner: string;
+}
+export type LogoInfo = {
+  url: string;
+} | "embedded";
+export type Addr = string;
 export interface AllowMsg {
   contract: string;
   gas_limit?: number | null;
@@ -172,10 +192,6 @@ export type Amount = {
 } | {
   cw20: Cw20Coin;
 };
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
-}
 export interface ChannelInfo {
   connection_id: string;
   counterparty_endpoint: IbcEndpoint;
@@ -189,31 +205,6 @@ export interface AllowedInfo {
   contract: string;
   gas_limit?: number | null;
 }
-export type Logo = {
-  url: string;
-} | {
-  embedded: EmbeddedLogo;
-};
-export type EmbeddedLogo = {
-  svg: Binary;
-} | {
-  png: Binary;
-};
-export interface InstantiateMarketingInfo {
-  description?: string | null;
-  logo?: Logo | null;
-  marketing?: string | null;
-  project?: string | null;
-}
-export interface SpenderAllowanceInfo {
-  allowance: Uint128;
-  expires: Expiration;
-  owner: string;
-}
-export type LogoInfo = {
-  url: string;
-} | "embedded";
-export type Addr = string;
 export type Duration = {
   height: number;
 } | {
@@ -289,13 +280,13 @@ export interface Config {
   proposal_deposit?: DepositInfo | null;
   threshold: Threshold;
 }
-export interface Member {
-  addr: string;
-  weight: number;
-}
 export interface Claim {
   amount: Uint128;
   release_at: Expiration;
+}
+export interface Member {
+  addr: string;
+  weight: number;
 }
 export type Action = {
   transfer_ownership: {
@@ -350,7 +341,7 @@ export interface TokenFee {
 }
 export interface Ratio {
   denominator: number;
-  numerator: number;
+  nominator: number;
 }
 export interface PairQuery {
   key: string;
