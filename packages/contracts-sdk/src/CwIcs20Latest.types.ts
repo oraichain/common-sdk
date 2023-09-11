@@ -1,10 +1,14 @@
-import {AllowMsg, Uint128, Binary, AssetInfo, Addr, Cw20ReceiveMsg, TransferMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo, PairQuery, MappingMetadata, ArrayOfPairQuery} from "./types";
+import {Uint128, Binary, Addr, Coin, IbcEndpoint} from "./types";
 export interface InstantiateMsg {
   allowlist: AllowMsg[];
   default_gas_limit?: number | null;
   default_timeout: number;
   gov_contract: string;
   swap_router_contract: string;
+}
+export interface AllowMsg {
+  contract: string;
+  gas_limit?: number | null;
 }
 export type ExecuteMsg = {
   receive: Cw20ReceiveMsg;
@@ -27,6 +31,44 @@ export type ExecuteMsg = {
     swap_router_contract?: string | null;
   };
 };
+export type AssetInfo = {
+  token: {
+    contract_addr: Addr;
+  };
+} | {
+  native_token: {
+    denom: string;
+  };
+};
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
+export interface TransferMsg {
+  channel: string;
+  memo?: string | null;
+  remote_address: string;
+  timeout?: number | null;
+}
+export interface TransferBackMsg {
+  local_channel_id: string;
+  memo?: string | null;
+  remote_address: string;
+  remote_denom: string;
+  timeout?: number | null;
+}
+export interface UpdatePairMsg {
+  asset_info: AssetInfo;
+  asset_info_decimals: number;
+  denom: string;
+  local_channel_id: string;
+  remote_decimals: number;
+}
+export interface DeletePairMsg {
+  denom: string;
+  local_channel_id: string;
+}
 export type QueryMsg = {
   port: {};
 } | {
@@ -72,10 +114,24 @@ export interface AllowedResponse {
   gas_limit?: number | null;
   is_allowed: boolean;
 }
+export type Amount = {
+  native: Coin;
+} | {
+  cw20: Cw20Coin;
+};
 export interface ChannelResponse {
   balances: Amount[];
   info: ChannelInfo;
   total_sent: Amount[];
+}
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface ChannelInfo {
+  connection_id: string;
+  counterparty_endpoint: IbcEndpoint;
+  id: string;
 }
 export interface ConfigResponse {
   default_gas_limit?: number | null;
@@ -87,9 +143,23 @@ export interface ConfigResponse {
 export interface ListAllowedResponse {
   allow: AllowedInfo[];
 }
+export interface AllowedInfo {
+  contract: string;
+  gas_limit?: number | null;
+}
 export interface ListChannelsResponse {
   channels: ChannelInfo[];
 }
+export interface PairQuery {
+  key: string;
+  pair_mapping: MappingMetadata;
+}
+export interface MappingMetadata {
+  asset_info: AssetInfo;
+  asset_info_decimals: number;
+  remote_decimals: number;
+}
+export type ArrayOfPairQuery = PairQuery[];
 export interface PortResponse {
   port_id: string;
 }

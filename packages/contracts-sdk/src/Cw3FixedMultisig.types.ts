@@ -1,8 +1,31 @@
-import {Duration, Threshold, Decimal, Voter, Expiration, Timestamp, Uint64, CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, WasmMsg, GovMsg, VoteOption, Vote, Coin, Empty, IbcTimeout, IbcTimeoutBlock, Denom, Addr, Status, DepositInfo, VoterDetail, VoteInfo} from "./types";
+import {Decimal, Timestamp, Uint64, CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, WasmMsg, GovMsg, VoteOption, Coin, Empty, IbcTimeout, IbcTimeoutBlock, Addr} from "./types";
+export type Duration = {
+  height: number;
+} | {
+  time: number;
+};
+export type Threshold = {
+  absolute_count: {
+    weight: number;
+  };
+} | {
+  absolute_percentage: {
+    percentage: Decimal;
+  };
+} | {
+  threshold_quorum: {
+    quorum: Decimal;
+    threshold: Decimal;
+  };
+};
 export interface InstantiateMsg {
   max_voting_period: Duration;
   threshold: Threshold;
   voters: Voter[];
+}
+export interface Voter {
+  addr: string;
+  weight: number;
 }
 export type ExecuteMsg = {
   propose: {
@@ -25,6 +48,14 @@ export type ExecuteMsg = {
     proposal_id: number;
   };
 };
+export type Expiration = {
+  at_height: number;
+} | {
+  at_time: Timestamp;
+} | {
+  never: {};
+};
+export type Vote = "yes" | "no" | "abstain" | "veto";
 export type QueryMsg = {
   threshold: {};
 } | {
@@ -62,6 +93,12 @@ export type QueryMsg = {
     start_after?: string | null;
   };
 };
+export type Denom = {
+  native: string;
+} | {
+  cw20: Addr;
+};
+export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
 export type ThresholdResponse = {
   absolute_count: {
     total_weight: number;
@@ -93,11 +130,26 @@ export interface ProposalResponseForEmpty {
   threshold: ThresholdResponse;
   title: string;
 }
+export interface DepositInfo {
+  amount: Uint128;
+  denom: Denom;
+  refund_failed_proposals: boolean;
+}
 export interface VoterListResponse {
   voters: VoterDetail[];
 }
+export interface VoterDetail {
+  addr: string;
+  weight: number;
+}
 export interface VoteListResponse {
   votes: VoteInfo[];
+}
+export interface VoteInfo {
+  proposal_id: number;
+  vote: Vote;
+  voter: string;
+  weight: number;
 }
 export interface VoteResponse {
   vote?: VoteInfo | null;

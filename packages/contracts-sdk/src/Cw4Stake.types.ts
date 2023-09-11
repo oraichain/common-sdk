@@ -1,4 +1,14 @@
-import {Denom, Addr, Uint128, Duration, Binary, Cw20ReceiveMsg, Expiration, Timestamp, Uint64, Claim, Member} from "./types";
+import {Addr, Uint128, Binary, Timestamp, Uint64} from "./types";
+export type Denom = {
+  native: string;
+} | {
+  cw20: Addr;
+};
+export type Duration = {
+  height: number;
+} | {
+  time: number;
+};
 export interface InstantiateMsg {
   admin?: string | null;
   denom: Denom;
@@ -29,6 +39,11 @@ export type ExecuteMsg = {
 } | {
   receive: Cw20ReceiveMsg;
 };
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
 export type QueryMsg = {
   claims: {
     address: string;
@@ -57,14 +72,29 @@ export type QueryMsg = {
 export interface AdminResponse {
   admin?: string | null;
 }
+export type Expiration = {
+  at_height: number;
+} | {
+  at_time: Timestamp;
+} | {
+  never: {};
+};
 export interface ClaimsResponse {
   claims: Claim[];
+}
+export interface Claim {
+  amount: Uint128;
+  release_at: Expiration;
 }
 export interface HooksResponse {
   hooks: string[];
 }
 export interface MemberListResponse {
   members: Member[];
+}
+export interface Member {
+  addr: string;
+  weight: number;
 }
 export interface MemberResponse {
   weight?: number | null;
