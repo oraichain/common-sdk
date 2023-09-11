@@ -13,8 +13,6 @@ export interface AllowMsg {
 export type ExecuteMsg = {
   receive: Cw20ReceiveMsg;
 } | {
-  transfer: TransferMsg;
-} | {
   transfer_to_remote: TransferBackMsg;
 } | {
   update_mapping_pair: UpdatePairMsg;
@@ -28,7 +26,11 @@ export type ExecuteMsg = {
     default_gas_limit?: number | null;
     default_timeout?: number | null;
     fee_denom?: string | null;
+    fee_receiver?: string | null;
+    relayer_fee?: RelayerFee[] | null;
+    relayer_fee_receiver?: string | null;
     swap_router_contract?: string | null;
+    token_fee?: TokenFee[] | null;
   };
 };
 export type AssetInfo = {
@@ -45,12 +47,6 @@ export interface Cw20ReceiveMsg {
   msg: Binary;
   sender: string;
 }
-export interface TransferMsg {
-  channel: string;
-  memo?: string | null;
-  remote_address: string;
-  timeout?: number | null;
-}
 export interface TransferBackMsg {
   local_channel_id: string;
   memo?: string | null;
@@ -59,15 +55,27 @@ export interface TransferBackMsg {
   timeout?: number | null;
 }
 export interface UpdatePairMsg {
-  asset_info: AssetInfo;
-  asset_info_decimals: number;
   denom: string;
+  local_asset_info: AssetInfo;
+  local_asset_info_decimals: number;
   local_channel_id: string;
   remote_decimals: number;
 }
 export interface DeletePairMsg {
   denom: string;
   local_channel_id: string;
+}
+export interface RelayerFee {
+  fee: Uint128;
+  prefix: string;
+}
+export interface TokenFee {
+  ratio: Ratio;
+  token_denom: string;
+}
+export interface Ratio {
+  denominator: number;
+  numerator: number;
 }
 export type QueryMsg = {
   port: {};
@@ -106,6 +114,10 @@ export type QueryMsg = {
   pair_mappings_from_asset_info: {
     asset_info: AssetInfo;
   };
+} | {
+  get_transfer_token_fee: {
+    remote_token_denom: string;
+  };
 };
 export interface AdminResponse {
   admin?: string | null;
@@ -138,7 +150,15 @@ export interface ConfigResponse {
   default_timeout: number;
   fee_denom: string;
   gov_contract: string;
+  relayer_fee_receiver: Addr;
+  relayer_fees: RelayerFeeResponse[];
   swap_router_contract: string;
+  token_fee_receiver: Addr;
+  token_fees: TokenFee[];
+}
+export interface RelayerFeeResponse {
+  amount: Uint128;
+  prefix: string;
 }
 export interface ListAllowedResponse {
   allow: AllowedInfo[];

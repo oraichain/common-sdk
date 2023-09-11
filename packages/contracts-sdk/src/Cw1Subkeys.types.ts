@@ -1,4 +1,4 @@
-import {CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, WasmMsg, Binary, Timestamp, Uint64, Coin, Empty} from "./types";
+import {CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, Timestamp, Uint64, WasmMsg, GovMsg, VoteOption, Coin, Empty, IbcTimeout, IbcTimeoutBlock} from "./types";
 export interface InstantiateMsg {
   admins: string[];
   mutable: boolean;
