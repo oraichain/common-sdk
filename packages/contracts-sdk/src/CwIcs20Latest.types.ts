@@ -1,10 +1,14 @@
-import {AllowMsg, Uint128, Binary, AssetInfo, Addr, Cw20ReceiveMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, TokenFee, Ratio, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo, PairQuery, MappingMetadata, ArrayOfPairQuery} from "./types";
+import {Uint128, Binary, Addr, Coin, IbcEndpoint} from "./types";
 export interface InstantiateMsg {
   allowlist: AllowMsg[];
   default_gas_limit?: number | null;
   default_timeout: number;
   gov_contract: string;
   swap_router_contract: string;
+}
+export interface AllowMsg {
+  contract: string;
+  gas_limit?: number | null;
 }
 export type ExecuteMsg = {
   receive: Cw20ReceiveMsg;
@@ -28,7 +32,65 @@ export type ExecuteMsg = {
     swap_router_contract?: string | null;
     token_fee?: TokenFee[] | null;
   };
+} | {
+  increase_channel_balance_ibc_receive: {
+    amount: Uint128;
+    dest_channel_id: string;
+    ibc_denom: string;
+    local_receiver: string;
+  };
+} | {
+  reduce_channel_balance_ibc_receive: {
+    amount: Uint128;
+    ibc_denom: string;
+    local_receiver: string;
+    src_channel_id: string;
+  };
 };
+export type AssetInfo = {
+  token: {
+    contract_addr: Addr;
+  };
+} | {
+  native_token: {
+    denom: string;
+  };
+};
+export interface Cw20ReceiveMsg {
+  amount: Uint128;
+  msg: Binary;
+  sender: string;
+}
+export interface TransferBackMsg {
+  local_channel_id: string;
+  memo?: string | null;
+  remote_address: string;
+  remote_denom: string;
+  timeout?: number | null;
+}
+export interface UpdatePairMsg {
+  denom: string;
+  local_asset_info: AssetInfo;
+  local_asset_info_decimals: number;
+  local_channel_id: string;
+  remote_decimals: number;
+}
+export interface DeletePairMsg {
+  denom: string;
+  local_channel_id: string;
+}
+export interface RelayerFee {
+  fee: Uint128;
+  prefix: string;
+}
+export interface TokenFee {
+  ratio: Ratio;
+  token_denom: string;
+}
+export interface Ratio {
+  denominator: number;
+  nominator: number;
+}
 export type QueryMsg = {
   port: {};
 } | {
@@ -78,10 +140,24 @@ export interface AllowedResponse {
   gas_limit?: number | null;
   is_allowed: boolean;
 }
+export type Amount = {
+  native: Coin;
+} | {
+  cw20: Cw20Coin;
+};
 export interface ChannelResponse {
   balances: Amount[];
   info: ChannelInfo;
   total_sent: Amount[];
+}
+export interface Cw20Coin {
+  address: string;
+  amount: Uint128;
+}
+export interface ChannelInfo {
+  connection_id: string;
+  counterparty_endpoint: IbcEndpoint;
+  id: string;
 }
 export interface ConfigResponse {
   default_gas_limit?: number | null;
@@ -101,9 +177,23 @@ export interface RelayerFeeResponse {
 export interface ListAllowedResponse {
   allow: AllowedInfo[];
 }
+export interface AllowedInfo {
+  contract: string;
+  gas_limit?: number | null;
+}
 export interface ListChannelsResponse {
   channels: ChannelInfo[];
 }
+export interface PairQuery {
+  key: string;
+  pair_mapping: MappingMetadata;
+}
+export interface MappingMetadata {
+  asset_info: AssetInfo;
+  asset_info_decimals: number;
+  remote_decimals: number;
+}
+export type ArrayOfPairQuery = PairQuery[];
 export interface PortResponse {
   port_id: string;
 }

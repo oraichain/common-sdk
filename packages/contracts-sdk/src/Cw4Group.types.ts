@@ -1,7 +1,11 @@
-import {Member} from "./types";
+import {Uint64} from "./types";
 export interface InstantiateMsg {
   admin?: string | null;
   members: Member[];
+}
+export interface Member {
+  addr: string;
+  weight: number;
 }
 export type ExecuteMsg = {
   update_admin: {
@@ -51,7 +55,4 @@ export interface MemberListResponse {
 }
 export interface MemberResponse {
   weight?: number | null;
-}
-export interface TotalWeightResponse {
-  weight: number;
 }
