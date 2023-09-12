@@ -1364,6 +1364,11 @@
   dependencies:
     "@octokit/openapi-types" "^17.1.2"
 
+"@oraichain/common-contracts-sdk@1.0.24":
+  version "1.0.24"
+  resolved "https://registry.yarnpkg.com/@oraichain/common-contracts-sdk/-/common-contracts-sdk-1.0.24.tgz#e856da3b0086a944a7f710cbcba9fa2dcab2cd74"
+  integrity sha512-dBmr6L9H82dm8EDjOycNTO6/S/VzBBwOifF4e2nrrbGnNtA42akCdA/e93S3bgoxiDZpFWEt4pPUkvZisWReJQ==
+
 "@oraichain/cosmwasm-vm-js@^0.2.57":
   version "0.2.57"
   resolved "https://registry.yarnpkg.com/@oraichain/cosmwasm-vm-js/-/cosmwasm-vm-js-0.2.57.tgz#a392b0cf2e9fbe60714bb3ae16efd2e6015f3fea"

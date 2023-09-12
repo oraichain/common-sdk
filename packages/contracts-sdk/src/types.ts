@@ -126,11 +126,11 @@ export interface IbcTimeoutBlock {
   height: number;
   revision: number;
 }
-export type Addr = string;
 export interface IbcEndpoint {
   channel_id: string;
   port_id: string;
 }
+export type Addr = string;
 export type Decimal = string;
 export type Null = null;
 export type Boolean = boolean;
