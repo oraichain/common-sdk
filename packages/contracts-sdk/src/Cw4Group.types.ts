@@ -1,4 +1,4 @@
-import {Member} from "./types";
+import {Member, Uint64} from "./types";
 export interface InstantiateMsg {
   admin?: string | null;
   members: Member[];
@@ -51,7 +51,4 @@ export interface MemberListResponse {
 }
 export interface MemberResponse {
   weight?: number | null;
-}
-export interface TotalWeightResponse {
-  weight: number;
 }

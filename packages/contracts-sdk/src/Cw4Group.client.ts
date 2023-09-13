@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import {Member} from "./types";
-import {InstantiateMsg, ExecuteMsg, QueryMsg, AdminResponse, HooksResponse, MemberListResponse, MemberResponse, TotalWeightResponse} from "./Cw4Group.types";
+import {Member, Uint64} from "./types";
+import {InstantiateMsg, ExecuteMsg, QueryMsg, AdminResponse, HooksResponse, MemberListResponse, MemberResponse} from "./Cw4Group.types";
 export interface Cw4GroupReadOnlyInterface {
   contractAddress: string;
   admin: () => Promise<AdminResponse>;
@@ -15,7 +15,7 @@ export interface Cw4GroupReadOnlyInterface {
     atHeight
   }: {
     atHeight?: number;
-  }) => Promise<TotalWeightResponse>;
+  }) => Promise<Uint64>;
   listMembers: ({
     limit,
     startAfter
@@ -55,7 +55,7 @@ export class Cw4GroupQueryClient implements Cw4GroupReadOnlyInterface {
     atHeight
   }: {
     atHeight?: number;
-  }): Promise<TotalWeightResponse> => {
+  }): Promise<Uint64> => {
     return this.client.queryContractSmart(this.contractAddress, {
       total_weight: {
         at_height: atHeight

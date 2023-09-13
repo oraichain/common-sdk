@@ -28,6 +28,20 @@ export type ExecuteMsg = {
     swap_router_contract?: string | null;
     token_fee?: TokenFee[] | null;
   };
+} | {
+  increase_channel_balance_ibc_receive: {
+    amount: Uint128;
+    dest_channel_id: string;
+    ibc_denom: string;
+    local_receiver: string;
+  };
+} | {
+  reduce_channel_balance_ibc_receive: {
+    amount: Uint128;
+    ibc_denom: string;
+    local_receiver: string;
+    src_channel_id: string;
+  };
 };
 export type AssetInfo = {
   token: {
@@ -66,7 +80,7 @@ export interface TokenFee {
 }
 export interface Ratio {
   denominator: number;
-  numerator: number;
+  nominator: number;
 }
 export type QueryMsg = {
   port: {};
