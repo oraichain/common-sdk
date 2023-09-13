@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import {Uint128, Binary, Coin, IbcEndpoint} from "./types";
-import {InstantiateMsg, AllowMsg, ExecuteMsg, Cw20ReceiveMsg, TransferMsg, QueryMsg, AdminResponse, AllowedResponse, Amount, ChannelResponse, Cw20Coin, ChannelInfo, ConfigResponse, ListAllowedResponse, AllowedInfo, ListChannelsResponse, PortResponse} from "./Cw20Ics20.types";
+import {AllowMsg, Uint128, Binary, Cw20ReceiveMsg, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo} from "./types";
+import {InstantiateMsg, ExecuteMsg, TransferMsg, QueryMsg, AdminResponse, AllowedResponse, ChannelResponse, ConfigResponse, ListAllowedResponse, ListChannelsResponse, PortResponse} from "./Cw20Ics20.types";
 export interface Cw20Ics20ReadOnlyInterface {
   contractAddress: string;
   port: () => Promise<PortResponse>;

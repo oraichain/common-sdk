@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import {Uint128, Binary, Timestamp, Uint64, Addr} from "./types";
-import {Logo, EmbeddedLogo, InstantiateMsg, Cw20Coin, InstantiateMarketingInfo, MinterResponse, ExecuteMsg, Expiration, QueryMsg, AllAccountsResponse, AllAllowancesResponse, AllowanceInfo, AllSpenderAllowancesResponse, SpenderAllowanceInfo, AllowanceResponse, BalanceResponse, DownloadLogoResponse, LogoInfo, MarketingInfoResponse, TokenInfoResponse} from "./Cw20Base.types";
+import {Uint128, Binary, Cw20Coin, Expiration, Timestamp, Uint64, Addr} from "./types";
+import {Logo, EmbeddedLogo, InstantiateMsg, InstantiateMarketingInfo, MinterResponse, ExecuteMsg, QueryMsg, AllAccountsResponse, AllAllowancesResponse, AllowanceInfo, AllSpenderAllowancesResponse, SpenderAllowanceInfo, AllowanceResponse, BalanceResponse, DownloadLogoResponse, LogoInfo, MarketingInfoResponse, TokenInfoResponse} from "./Cw20Base.types";
 export interface Cw20BaseReadOnlyInterface {
   contractAddress: string;
   balance: ({

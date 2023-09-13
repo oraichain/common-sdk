@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import {Binary, WasmMsg, Uint128, Coin, Uint64, Addr, Timestamp, Boolean} from "./types";
-import {Admin, InstantiateMsg, ContractInstantiateInfo, ExecuteMsg, CallbackMsg, ClassId, TokenId, Cw721ReceiveMsg, VoucherCreation, Class, Token, VoucherRedemption, QueryMsg, ClassToken, NullableClassId, NullableClass, ArrayOfTupleOfTupleOfClassIdAndTokenIdAndString, NullableAddr, ArrayOfTupleOfClassIdAndAddr, Expiration, OwnerOfResponse, Approval, NullableToken} from "./CwIcs721Bridge.types";
+import {Binary, WasmMsg, Uint128, Coin, Uint64, Addr, Expiration, Timestamp, Approval} from "./types";
+import {Admin, InstantiateMsg, ContractInstantiateInfo, ExecuteMsg, CallbackMsg, ClassId, TokenId, Cw721ReceiveMsg, VoucherCreation, Class, Token, VoucherRedemption, QueryMsg, ClassToken, NullableClassId, NullableClass, ArrayOfTupleOfTupleOfClassIdAndTokenIdAndString, NullableAddr, ArrayOfTupleOfClassIdAndAddr, OwnerOfResponse, Boolean, NullableToken} from "./CwIcs721Bridge.types";
 export interface CwIcs721BridgeReadOnlyInterface {
   contractAddress: string;
   classId: ({

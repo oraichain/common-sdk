@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { Coin, StdFee } from "@cosmjs/amino";
-import {Binary, Timestamp, Uint64, Empty, Null} from "./types";
-import {InstantiateMsg, ExecuteMsg, Expiration, Action, QueryMsg, AllNftInfoResponseForEmpty, OwnerOfResponse, Approval, NftInfoResponseForEmpty, OperatorsResponse, TokensResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, MinterResponse, NumTokensResponse, OperatorResponse, OwnershipForString} from "./Cw721Base.types";
+import {Binary, Expiration, Timestamp, Uint64, Empty, Approval} from "./types";
+import {InstantiateMsg, ExecuteMsg, Action, QueryMsg, AllNftInfoResponseForEmpty, OwnerOfResponse, NftInfoResponseForEmpty, OperatorsResponse, TokensResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, Null, MinterResponse, NumTokensResponse, OperatorResponse, OwnershipForString} from "./Cw721Base.types";
 export interface Cw721BaseReadOnlyInterface {
   contractAddress: string;
   ownerOf: ({

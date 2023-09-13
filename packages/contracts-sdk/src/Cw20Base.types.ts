@@ -1,4 +1,4 @@
-import {Uint128, Binary, Timestamp, Uint64, Addr} from "./types";
+import {Uint128, Binary, Cw20Coin, Expiration, Timestamp, Uint64, Addr} from "./types";
 export type Logo = {
   url: string;
 } | {
@@ -16,10 +16,6 @@ export interface InstantiateMsg {
   mint?: MinterResponse | null;
   name: string;
   symbol: string;
-}
-export interface Cw20Coin {
-  address: string;
-  amount: Uint128;
 }
 export interface InstantiateMarketingInfo {
   description?: string | null;
@@ -93,13 +89,6 @@ export type ExecuteMsg = {
   };
 } | {
   upload_logo: Logo;
-};
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
 };
 export type QueryMsg = {
   balance: {

@@ -1,4 +1,4 @@
-import {Binary, Timestamp, Uint64, Empty, Null} from "./types";
+import {Binary, Expiration, Timestamp, Uint64, Empty, Approval} from "./types";
 export interface InstantiateMsg {
   minter: string;
   name: string;
@@ -52,13 +52,6 @@ export type ExecuteMsg = {
   };
 } | {
   update_ownership: Action;
-};
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
 };
 export type Action = {
   transfer_ownership: {
@@ -136,10 +129,6 @@ export interface OwnerOfResponse {
   approvals: Approval[];
   owner: string;
 }
-export interface Approval {
-  expires: Expiration;
-  spender: string;
-}
 export interface NftInfoResponseForEmpty {
   extension: Empty;
   token_uri?: string | null;
@@ -160,6 +149,7 @@ export interface ContractInfoResponse {
   name: string;
   symbol: string;
 }
+export type Null = null;
 export interface MinterResponse {
   minter?: string | null;
 }

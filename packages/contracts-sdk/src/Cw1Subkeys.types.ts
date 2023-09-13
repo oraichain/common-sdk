@@ -1,4 +1,4 @@
-import {CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, Timestamp, Uint64, WasmMsg, GovMsg, VoteOption, Coin, Empty, IbcTimeout, IbcTimeoutBlock} from "./types";
+import {CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, Timestamp, Uint64, WasmMsg, GovMsg, VoteOption, Expiration, Coin, Empty, IbcTimeout, IbcTimeoutBlock} from "./types";
 export interface InstantiateMsg {
   admins: string[];
   mutable: boolean;
@@ -30,13 +30,6 @@ export type ExecuteMsg = {
     permissions: Permissions;
     spender: string;
   };
-};
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
 };
 export interface Permissions {
   delegate: boolean;

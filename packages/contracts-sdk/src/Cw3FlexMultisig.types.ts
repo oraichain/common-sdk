@@ -1,30 +1,11 @@
-import {Addr, Uint128, Decimal, Timestamp, Uint64, CosmosMsgForEmpty, BankMsg, StakingMsg, DistributionMsg, Binary, IbcMsg, WasmMsg, GovMsg, VoteOption, Coin, Empty, IbcTimeout, IbcTimeoutBlock} from "./types";
+import {Addr, Duration, Uint128, Threshold, Decimal, Expiration, Timestamp, Uint64, CosmosMsgForEmpty, BankMsg, StakingMsg, DistributionMsg, Binary, IbcMsg, WasmMsg, GovMsg, VoteOption, Vote, Coin, Empty, IbcTimeout, IbcTimeoutBlock, Denom, DepositInfo, Status, VoterDetail, VoteInfo} from "./types";
 export type Executor = "member" | {
   only: Addr;
-};
-export type Duration = {
-  height: number;
-} | {
-  time: number;
 };
 export type UncheckedDenom = {
   native: string;
 } | {
   cw20: string;
-};
-export type Threshold = {
-  absolute_count: {
-    weight: number;
-  };
-} | {
-  absolute_percentage: {
-    percentage: Decimal;
-  };
-} | {
-  threshold_quorum: {
-    quorum: Decimal;
-    threshold: Decimal;
-  };
 };
 export interface InstantiateMsg {
   executor?: Executor | null;
@@ -61,14 +42,6 @@ export type ExecuteMsg = {
 } | {
   member_changed_hook: MemberChangedHookMsg;
 };
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
-};
-export type Vote = "yes" | "no" | "abstain" | "veto";
 export interface MemberChangedHookMsg {
   diffs: MemberDiff[];
 }
@@ -117,11 +90,6 @@ export type QueryMsg = {
   config: {};
 };
 export type Cw4Contract = Addr;
-export type Denom = {
-  native: string;
-} | {
-  cw20: Addr;
-};
 export interface Config {
   executor?: Executor | null;
   group_addr: Cw4Contract;
@@ -129,12 +97,6 @@ export interface Config {
   proposal_deposit?: DepositInfo | null;
   threshold: Threshold;
 }
-export interface DepositInfo {
-  amount: Uint128;
-  denom: Denom;
-  refund_failed_proposals: boolean;
-}
-export type Status = "pending" | "open" | "rejected" | "passed" | "executed";
 export type ThresholdResponse = {
   absolute_count: {
     total_weight: number;
@@ -169,18 +131,8 @@ export interface ProposalResponseForEmpty {
 export interface VoterListResponse {
   voters: VoterDetail[];
 }
-export interface VoterDetail {
-  addr: string;
-  weight: number;
-}
 export interface VoteListResponse {
   votes: VoteInfo[];
-}
-export interface VoteInfo {
-  proposal_id: number;
-  vote: Vote;
-  voter: string;
-  weight: number;
 }
 export interface VoteResponse {
   vote?: VoteInfo | null;

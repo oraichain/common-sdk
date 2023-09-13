@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import {Decimal, Timestamp, Uint64, CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, WasmMsg, GovMsg, VoteOption, Coin, Empty, IbcTimeout, IbcTimeoutBlock, Addr} from "./types";
-import {Duration, Threshold, InstantiateMsg, Voter, ExecuteMsg, Expiration, Vote, QueryMsg, Denom, Status, ThresholdResponse, ProposalListResponseForEmpty, ProposalResponseForEmpty, DepositInfo, VoterListResponse, VoterDetail, VoteListResponse, VoteInfo, VoteResponse, VoterResponse} from "./Cw3FixedMultisig.types";
+import {Duration, Threshold, Decimal, Expiration, Timestamp, Uint64, CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, WasmMsg, GovMsg, VoteOption, Vote, Coin, Empty, IbcTimeout, IbcTimeoutBlock, Denom, Addr, Status, DepositInfo, VoterDetail, VoteInfo} from "./types";
+import {InstantiateMsg, Voter, ExecuteMsg, QueryMsg, ThresholdResponse, ProposalListResponseForEmpty, ProposalResponseForEmpty, VoterListResponse, VoteListResponse, VoteResponse, VoterResponse} from "./Cw3FixedMultisig.types";
 export interface Cw3FixedMultisigReadOnlyInterface {
   contractAddress: string;
   threshold: () => Promise<ThresholdResponse>;

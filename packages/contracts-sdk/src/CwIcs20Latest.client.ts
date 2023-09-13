@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import {Uint128, Binary, Addr, Coin, IbcEndpoint} from "./types";
-import {InstantiateMsg, AllowMsg, ExecuteMsg, AssetInfo, Cw20ReceiveMsg, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, TokenFee, Ratio, QueryMsg, AdminResponse, AllowedResponse, Amount, ChannelResponse, Cw20Coin, ChannelInfo, ConfigResponse, RelayerFeeResponse, ListAllowedResponse, AllowedInfo, ListChannelsResponse, PairQuery, MappingMetadata, ArrayOfPairQuery, PortResponse} from "./CwIcs20Latest.types";
+import {AllowMsg, Uint128, Binary, Addr, Cw20ReceiveMsg, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo} from "./types";
+import {InstantiateMsg, ExecuteMsg, AssetInfo, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, TokenFee, Ratio, QueryMsg, AdminResponse, AllowedResponse, ChannelResponse, ConfigResponse, RelayerFeeResponse, ListAllowedResponse, ListChannelsResponse, PairQuery, MappingMetadata, ArrayOfPairQuery, PortResponse} from "./CwIcs20Latest.types";
 export interface CwIcs20LatestReadOnlyInterface {
   contractAddress: string;
   port: () => Promise<PortResponse>;
@@ -266,28 +266,6 @@ export interface CwIcs20LatestInterface extends CwIcs20LatestReadOnlyInterface {
     swapRouterContract?: string;
     tokenFee?: TokenFee[];
   }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
-  increaseChannelBalanceIbcReceive: ({
-    amount,
-    destChannelId,
-    ibcDenom,
-    localReceiver
-  }: {
-    amount: Uint128;
-    destChannelId: string;
-    ibcDenom: string;
-    localReceiver: string;
-  }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
-  reduceChannelBalanceIbcReceive: ({
-    amount,
-    ibcDenom,
-    localReceiver,
-    srcChannelId
-  }: {
-    amount: Uint128;
-    ibcDenom: string;
-    localReceiver: string;
-    srcChannelId: string;
-  }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwIcs20LatestInterface {
   client: SigningCosmWasmClient;
@@ -305,8 +283,6 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
     this.deleteMappingPair = this.deleteMappingPair.bind(this);
     this.allow = this.allow.bind(this);
     this.updateConfig = this.updateConfig.bind(this);
-    this.increaseChannelBalanceIbcReceive = this.increaseChannelBalanceIbcReceive.bind(this);
-    this.reduceChannelBalanceIbcReceive = this.reduceChannelBalanceIbcReceive.bind(this);
   }
 
   receive = async ({
@@ -432,46 +408,6 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
         relayer_fee_receiver: relayerFeeReceiver,
         swap_router_contract: swapRouterContract,
         token_fee: tokenFee
-      }
-    }, _fee, _memo, _funds);
-  };
-  increaseChannelBalanceIbcReceive = async ({
-    amount,
-    destChannelId,
-    ibcDenom,
-    localReceiver
-  }: {
-    amount: Uint128;
-    destChannelId: string;
-    ibcDenom: string;
-    localReceiver: string;
-  }, _fee: number | StdFee | "auto" = "auto", _memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
-    return await this.client.execute(this.sender, this.contractAddress, {
-      increase_channel_balance_ibc_receive: {
-        amount,
-        dest_channel_id: destChannelId,
-        ibc_denom: ibcDenom,
-        local_receiver: localReceiver
-      }
-    }, _fee, _memo, _funds);
-  };
-  reduceChannelBalanceIbcReceive = async ({
-    amount,
-    ibcDenom,
-    localReceiver,
-    srcChannelId
-  }: {
-    amount: Uint128;
-    ibcDenom: string;
-    localReceiver: string;
-    srcChannelId: string;
-  }, _fee: number | StdFee | "auto" = "auto", _memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
-    return await this.client.execute(this.sender, this.contractAddress, {
-      reduce_channel_balance_ibc_receive: {
-        amount,
-        ibc_denom: ibcDenom,
-        local_receiver: localReceiver,
-        src_channel_id: srcChannelId
       }
     }, _fee, _memo, _funds);
   };

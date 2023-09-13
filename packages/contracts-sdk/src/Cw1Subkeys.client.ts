@@ -6,8 +6,8 @@
 
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
-import {CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, Timestamp, Uint64, WasmMsg, GovMsg, VoteOption, Coin, Empty, IbcTimeout, IbcTimeoutBlock} from "./types";
-import {InstantiateMsg, ExecuteMsg, Expiration, Permissions, QueryMsg, AdminListResponse, NativeBalance, AllAllowancesResponse, AllowanceInfo, AllPermissionsResponse, PermissionsInfo, Allowance, CanExecuteResponse} from "./Cw1Subkeys.types";
+import {CosmosMsgForEmpty, BankMsg, Uint128, StakingMsg, DistributionMsg, Binary, IbcMsg, Timestamp, Uint64, WasmMsg, GovMsg, VoteOption, Expiration, Coin, Empty, IbcTimeout, IbcTimeoutBlock} from "./types";
+import {InstantiateMsg, ExecuteMsg, Permissions, QueryMsg, AdminListResponse, NativeBalance, AllAllowancesResponse, AllowanceInfo, AllPermissionsResponse, PermissionsInfo, Allowance, CanExecuteResponse} from "./Cw1Subkeys.types";
 export interface Cw1SubkeysReadOnlyInterface {
   contractAddress: string;
   adminList: () => Promise<AdminListResponse>;

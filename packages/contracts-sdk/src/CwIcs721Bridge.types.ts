@@ -1,4 +1,4 @@
-import {Binary, WasmMsg, Uint128, Coin, Uint64, Addr, Timestamp, Boolean} from "./types";
+import {Binary, WasmMsg, Uint128, Coin, Uint64, Addr, Expiration, Timestamp, Approval} from "./types";
 export type Admin = {
   address: {
     addr: string;
@@ -130,19 +130,9 @@ export type NullableClass = Class | null;
 export type ArrayOfTupleOfTupleOfClassIdAndTokenIdAndString = [[ClassId, TokenId], string][];
 export type NullableAddr = Addr | null;
 export type ArrayOfTupleOfClassIdAndAddr = [ClassId, Addr][];
-export type Expiration = {
-  at_height: number;
-} | {
-  at_time: Timestamp;
-} | {
-  never: {};
-};
 export interface OwnerOfResponse {
   approvals: Approval[];
   owner: string;
 }
-export interface Approval {
-  expires: Expiration;
-  spender: string;
-}
+export type Boolean = boolean;
 export type NullableToken = Token | null;
