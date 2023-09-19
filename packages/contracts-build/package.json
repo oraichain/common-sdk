@@ -1,6 +1,6 @@
 {
   "name": "@oraichain/common-contracts-build",
-  "version": "1.0.27",
+  "version": "1.0.28",
   "main": "build/index.js",
   "license": "MIT",
   "files": [
@@ -8,6 +8,6 @@
     "data/"
   ],
   "dependencies": {
-    "@oraichain/common-contracts-sdk": "1.0.30"
+    "@oraichain/common-contracts-sdk": "1.0.31"
   }
 }
