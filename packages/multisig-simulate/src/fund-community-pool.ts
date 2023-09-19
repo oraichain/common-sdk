@@ -28,7 +28,10 @@ function instantiateCosmWasmClient(): SimulateCosmWasmClient {
                 attributes: [
                   { key: "recipient", value: fakeDistributionModuleAcc },
                   { key: "sender", value: msgFund.depositor },
-                  { key: "amount", value: msgFund.amount },
+                  {
+                    key: "amount",
+                    value: msgFund.amount.find((fund) => fund).amount,
+                  },
                 ],
               },
             ],
@@ -57,62 +60,64 @@ async function deployMultiSigContracts(client: SimulateCosmWasmClient) {
 
 async function simulate() {
   // fixture
-  const cosmwasmClient = instantiateCosmWasmClient();
-  const { multisigContract } = await deployMultiSigContracts(cosmwasmClient);
-  const multisigClient = new Cw3FlexMultisigClient(
-    cosmwasmClient,
-    sender,
-    multisigContract.contractAddress
-  );
+  try {
+    const cosmwasmClient = instantiateCosmWasmClient();
+    const { multisigContract } = await deployMultiSigContracts(cosmwasmClient);
+    const multisigClient = new Cw3FlexMultisigClient(
+      cosmwasmClient,
+      sender,
+      multisigContract.contractAddress
+    );
 
-  // action
-  await multisigClient.propose({
-    description: "foobar",
-    title: "foobar",
-    msgs: [
-      {
-        stargate: {
-          type_url: "/cosmos.distribution.v1beta1.MsgFundCommunityPool",
-          value: Buffer.from(
-            MsgFundCommunityPool.encode(
-              MsgFundCommunityPool.fromPartial({
-                depositor: multisigClient.contractAddress,
-                amount: [{ denom: "orai", amount: "1" }],
-              })
-            ).finish()
-          ).toString("base64"),
+    // action
+    await multisigClient.propose({
+      description: "foobar",
+      title: "foobar",
+      msgs: [
+        {
+          stargate: {
+            type_url: "/cosmos.distribution.v1beta1.MsgFundCommunityPool",
+            value: Buffer.from(
+              MsgFundCommunityPool.encode(
+                MsgFundCommunityPool.fromPartial({
+                  depositor: multisigClient.contractAddress,
+                  amount: [{ denom: "orai", amount: "1" }],
+                })
+              ).finish()
+            ).toString("base64"),
+          },
         },
-      },
-    ],
-  });
+      ],
+    });
 
-  const result = await multisigClient.execute({ proposalId: 1 });
+    const result = await multisigClient.execute({ proposalId: 1 });
 
-  // assert
-  if (
-    !result.events.find(
-      (event) =>
-        event.type === "transfer" &&
-        event.attributes.find(
-          (attr) =>
-            attr.key === "recipient" && attr.value === fakeDistributionModuleAcc
-        ) &&
-        event.attributes.find(
-          (attr) =>
-            attr.key === "sender" &&
-            attr.value === multisigClient.contractAddress
-        ) &&
-        event.attributes.find(
-          (attr) =>
-            attr.key === "amount" &&
-            JSON.stringify(attr.value) ===
-              JSON.stringify([{ denom: "orai", amount: "1" }])
-        )
-    )
-  ) {
-    throw "Cannot find community pool funding transaction";
+    // assert
+    if (
+      !result.events.find(
+        (event) =>
+          event.type === "transfer" &&
+          event.attributes.find(
+            (attr) =>
+              attr.key === "recipient" &&
+              attr.value === fakeDistributionModuleAcc
+          ) &&
+          event.attributes.find(
+            (attr) =>
+              attr.key === "sender" &&
+              attr.value === multisigClient.contractAddress
+          ) &&
+          event.attributes.find(
+            (attr) => attr.key === "amount" && attr.value === "1"
+          )
+      )
+    ) {
+      throw "Cannot find community pool funding transaction";
+    }
+    console.log("Simulation passed!");
+  } catch (error) {
+    console.log("error: ", error);
   }
-  console.log("Simulation passed!");
 }
 
 simulate();

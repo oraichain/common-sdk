@@ -8,6 +8,6 @@
     "data/"
   ],
   "dependencies": {
-    "@oraichain/common-contracts-sdk": "1.0.28"
+    "@oraichain/common-contracts-sdk": "1.0.30"
   }
 }

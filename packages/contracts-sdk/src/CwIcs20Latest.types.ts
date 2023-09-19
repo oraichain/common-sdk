@@ -42,6 +42,13 @@ export type ExecuteMsg = {
     local_receiver: string;
     src_channel_id: string;
   };
+} | {
+  override_channel_balance: {
+    channel_id: string;
+    ibc_denom: string;
+    outstanding: Uint128;
+    total_sent?: Uint128 | null;
+  };
 };
 export type AssetInfo = {
   token: {
@@ -88,8 +95,12 @@ export type QueryMsg = {
   list_channels: {};
 } | {
   channel: {
-    forward?: boolean | null;
     id: string;
+  };
+} | {
+  channel_with_key: {
+    channel_id: string;
+    denom: string;
   };
 } | {
   config: {};
@@ -135,6 +146,11 @@ export interface ChannelResponse {
   balances: Amount[];
   info: ChannelInfo;
   total_sent: Amount[];
+}
+export interface ChannelWithKeyResponse {
+  balance: Amount;
+  info: ChannelInfo;
+  total_sent: Amount;
 }
 export interface ConfigResponse {
   default_gas_limit?: number | null;

@@ -7,18 +7,23 @@
 import { CosmWasmClient, SigningCosmWasmClient, ExecuteResult } from "@cosmjs/cosmwasm-stargate";
 import { StdFee } from "@cosmjs/amino";
 import {AllowMsg, Uint128, Binary, Addr, Cw20ReceiveMsg, Amount, Coin, Cw20Coin, ChannelInfo, IbcEndpoint, AllowedInfo} from "./types";
-import {InstantiateMsg, ExecuteMsg, AssetInfo, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, TokenFee, Ratio, QueryMsg, AdminResponse, AllowedResponse, ChannelResponse, ConfigResponse, RelayerFeeResponse, ListAllowedResponse, ListChannelsResponse, PairQuery, MappingMetadata, ArrayOfPairQuery, PortResponse} from "./CwIcs20Latest.types";
+import {InstantiateMsg, ExecuteMsg, AssetInfo, TransferBackMsg, UpdatePairMsg, DeletePairMsg, RelayerFee, TokenFee, Ratio, QueryMsg, AdminResponse, AllowedResponse, ChannelResponse, ChannelWithKeyResponse, ConfigResponse, RelayerFeeResponse, ListAllowedResponse, ListChannelsResponse, PairQuery, MappingMetadata, ArrayOfPairQuery, PortResponse} from "./CwIcs20Latest.types";
 export interface CwIcs20LatestReadOnlyInterface {
   contractAddress: string;
   port: () => Promise<PortResponse>;
   listChannels: () => Promise<ListChannelsResponse>;
   channel: ({
-    forward,
     id
   }: {
-    forward?: boolean;
     id: string;
   }) => Promise<ChannelResponse>;
+  channelWithKey: ({
+    channelId,
+    denom
+  }: {
+    channelId: string;
+    denom: string;
+  }) => Promise<ChannelWithKeyResponse>;
   config: () => Promise<ConfigResponse>;
   admin: () => Promise<AdminResponse>;
   allowed: ({
@@ -70,6 +75,7 @@ export class CwIcs20LatestQueryClient implements CwIcs20LatestReadOnlyInterface 
     this.port = this.port.bind(this);
     this.listChannels = this.listChannels.bind(this);
     this.channel = this.channel.bind(this);
+    this.channelWithKey = this.channelWithKey.bind(this);
     this.config = this.config.bind(this);
     this.admin = this.admin.bind(this);
     this.allowed = this.allowed.bind(this);
@@ -91,16 +97,27 @@ export class CwIcs20LatestQueryClient implements CwIcs20LatestReadOnlyInterface 
     });
   };
   channel = async ({
-    forward,
     id
   }: {
-    forward?: boolean;
     id: string;
   }): Promise<ChannelResponse> => {
     return this.client.queryContractSmart(this.contractAddress, {
       channel: {
-        forward,
         id
+      }
+    });
+  };
+  channelWithKey = async ({
+    channelId,
+    denom
+  }: {
+    channelId: string;
+    denom: string;
+  }): Promise<ChannelWithKeyResponse> => {
+    return this.client.queryContractSmart(this.contractAddress, {
+      channel_with_key: {
+        channel_id: channelId,
+        denom
       }
     });
   };
@@ -288,6 +305,17 @@ export interface CwIcs20LatestInterface extends CwIcs20LatestReadOnlyInterface {
     localReceiver: string;
     srcChannelId: string;
   }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
+  overrideChannelBalance: ({
+    channelId,
+    ibcDenom,
+    outstanding,
+    totalSent
+  }: {
+    channelId: string;
+    ibcDenom: string;
+    outstanding: Uint128;
+    totalSent?: Uint128;
+  }, _fee?: number | StdFee | "auto", _memo?: string, _funds?: Coin[]) => Promise<ExecuteResult>;
 }
 export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwIcs20LatestInterface {
   client: SigningCosmWasmClient;
@@ -307,6 +335,7 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
     this.updateConfig = this.updateConfig.bind(this);
     this.increaseChannelBalanceIbcReceive = this.increaseChannelBalanceIbcReceive.bind(this);
     this.reduceChannelBalanceIbcReceive = this.reduceChannelBalanceIbcReceive.bind(this);
+    this.overrideChannelBalance = this.overrideChannelBalance.bind(this);
   }
 
   receive = async ({
@@ -472,6 +501,26 @@ export class CwIcs20LatestClient extends CwIcs20LatestQueryClient implements CwI
         ibc_denom: ibcDenom,
         local_receiver: localReceiver,
         src_channel_id: srcChannelId
+      }
+    }, _fee, _memo, _funds);
+  };
+  overrideChannelBalance = async ({
+    channelId,
+    ibcDenom,
+    outstanding,
+    totalSent
+  }: {
+    channelId: string;
+    ibcDenom: string;
+    outstanding: Uint128;
+    totalSent?: Uint128;
+  }, _fee: number | StdFee | "auto" = "auto", _memo?: string, _funds?: Coin[]): Promise<ExecuteResult> => {
+    return await this.client.execute(this.sender, this.contractAddress, {
+      override_channel_balance: {
+        channel_id: channelId,
+        ibc_denom: ibcDenom,
+        outstanding,
+        total_sent: totalSent
       }
     }, _fee, _memo, _funds);
   };
