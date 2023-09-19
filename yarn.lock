@@ -1261,6 +1261,23 @@
   dependencies:
     "@octokit/openapi-types" "^18.0.0"
 
+"@oraichain/common-contracts-build@1.0.27":
+  version "1.0.27"
+  resolved "https://registry.yarnpkg.com/@oraichain/common-contracts-build/-/common-contracts-build-1.0.27.tgz#41c9b4ac00e689ee17bd14ea25f69c8b19af883a"
+  integrity sha512-/eUcGtI9SAwkQx+rC28zHHVw4UbAg50RPGstfiV1hmOwg0NZG/Xh0+yJkyIB8+dpTrD8uNc+noWaUoGtgOR51Q==
+  dependencies:
+    "@oraichain/common-contracts-sdk" "1.0.28"
+
+"@oraichain/common-contracts-sdk@1.0.28":
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/@oraichain/common-contracts-sdk/-/common-contracts-sdk-1.0.28.tgz#a8d7a368d3503f1cbed9e7f93f5c088f5ceecbc7"
+  integrity sha512-zceqDRR14ZyrNEt4KuCcF14qE5pE++49oudjwlQkf1wF2bv32R8pKckAd4zZMcKEmkfQk6o7XEtDo3r4w/Gw3Q==
+
+"@oraichain/common-contracts-sdk@1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@oraichain/common-contracts-sdk/-/common-contracts-sdk-1.0.30.tgz#c932d05179c4051dc0cece6d285af2f5da7604b2"
+  integrity sha512-NsEEo8tNqe/xYb0uIi9X58PTZ/Y/agJmfQtOt5WAJZWoFLynNL1ntEET+bj1NMUtk3uZaSNFiz4BZrChAy+NTg==
+
 "@oraichain/cosmwasm-vm-js@^0.2.76":
   version "0.2.76"
   resolved "https://registry.yarnpkg.com/@oraichain/cosmwasm-vm-js/-/cosmwasm-vm-js-0.2.76.tgz#11431450b75bba0c822be1403f0a2483c2fb1694"
