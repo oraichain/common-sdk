@@ -28,3 +28,4 @@ typings/
 .npmrc
 build
 .yarn
+.DS_Store
